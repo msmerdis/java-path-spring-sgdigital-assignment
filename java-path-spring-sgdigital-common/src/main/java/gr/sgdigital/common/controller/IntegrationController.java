@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import gr.sgdigital.common.base.AbstractComponent;
+import gr.sgdigital.common.base.BaseComponent;
 import gr.sgdigital.common.transfer.ApiResponse;
 import gr.sgdigital.common.transfer.ApiStatus;
 import gr.sgdigital.common.transfer.status.AcceptedStatus;
@@ -24,7 +24,7 @@ import gr.sgdigital.common.transfer.status.UnauthorizedException;
  */
 @RestController
 @RequestMapping("/api/integration")
-public class IntegrationController extends AbstractComponent {
+public class IntegrationController extends BaseComponent {
 
 	@GetMapping()
 	public ApiResponse<String> ok() {

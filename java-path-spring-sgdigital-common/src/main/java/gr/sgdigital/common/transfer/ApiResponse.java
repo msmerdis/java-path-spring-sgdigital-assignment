@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import gr.sgdigital.common.transfer.status.SuccessStatus;
+
 public class ApiResponse<T> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -22,6 +24,10 @@ public class ApiResponse<T> implements Serializable {
 
 	public ApiResponse (ApiStatus status) {
 		this (status, null);
+	}
+
+	public ApiResponse (T data) {
+		this (new SuccessStatus(), data);
 	}
 
 	public ApiResponse (ApiStatus status, T data) {

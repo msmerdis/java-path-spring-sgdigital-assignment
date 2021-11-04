@@ -7,14 +7,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import gr.sgdigital.common.base.AbstractComponent;
+import gr.sgdigital.common.base.BaseComponent;
 import gr.sgdigital.common.transfer.ApiResponse;
 import gr.sgdigital.common.transfer.ApiStatus;
 import gr.sgdigital.common.transfer.status.MethodNotAllowedException;
 import gr.sgdigital.common.transfer.status.NotFoundException;
 
 @RestControllerAdvice
-public class CustomizedExceptionHandler extends AbstractComponent {
+public class CustomizedExceptionHandler extends BaseComponent {
 
 	/**
 	 * Universal handler for all different api statuses
