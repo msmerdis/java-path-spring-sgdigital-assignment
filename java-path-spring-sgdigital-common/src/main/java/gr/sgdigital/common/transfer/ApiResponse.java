@@ -16,7 +16,7 @@ public class ApiResponse<T> implements Serializable {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")
 	private LocalDateTime timestamp = LocalDateTime.now();
 
-	@JsonInclude(Include.NON_EMPTY)
+	@JsonInclude(Include.NON_NULL)
 	final public T data;
 
 	@JsonInclude(Include.ALWAYS)

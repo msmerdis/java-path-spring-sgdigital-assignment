@@ -1,18 +1,26 @@
 package gr.sgdigital.common.domain;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 /**
  * This class holds all common attributes a category in which products are organised.
  */
+@MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
 public class BaseEntity<I> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -21,11 +29,13 @@ public class BaseEntity<I> implements Serializable {
 	protected I id;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(nullable = false)
+	@Column(nullable = true)
+	@CreatedDate
 	protected Date createdDate;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(nullable = false)
+	@Column(nullable = true)
+	@LastModifiedDate
 	protected Date updatedDate;
 
 	public I getId() {
@@ -40,16 +50,8 @@ public class BaseEntity<I> implements Serializable {
 		return createdDate;
 	}
 
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
-
 	public Date getUpdatedDate() {
 		return updatedDate;
-	}
-
-	public void setUpdatedDate(Date updatedDate) {
-		this.updatedDate = updatedDate;
 	}
 
 	@Override

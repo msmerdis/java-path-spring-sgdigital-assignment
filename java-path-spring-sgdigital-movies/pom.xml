@@ -41,5 +41,14 @@
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>gr.sgdigital</groupId>
+			<artifactId>java-path-spring-sgdigital-common</artifactId>
+			<classifier>tests</classifier>
+			<type>test-jar</type>
+			<scope>test</scope>
+			<version>${project.version}</version>
+		</dependency>
+
 	</dependencies>
 </project>

@@ -39,46 +39,6 @@ public abstract class BaseController<E extends BaseEntity<I>, I> extends BaseCom
 	public ApiResponse<List<E>> findAll() {
 		return new ApiResponse<List<E>> (service.findAll());
 	}
-
-	@PostMapping
-	@ResponseStatus(HttpStatus.CREATED)
-	public ApiResponse<BaseEntity<I>> create(@Valid @RequestBody final E entity) {
-		return new ApiResponse<BaseEntity<I>> (new CreatedStatus(), service.create(entity));
-	}
-
-	@PutMapping
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void update(@Valid @RequestBody final E entity) {
-		service.update(entity);
-	}
-
-	@DeleteMapping("/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@PathVariable("id") final I id) {
-		service.deleteById(id);
-	}
-
-	@DeleteMapping
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(@Valid @RequestBody final E entity) {
-		if (service.exists(entity)) {
-			service.delete(entity);
-		}
-	}
-
-	protected HttpHeaders getNoCacheHeaders() {
-		final HttpHeaders headers = new HttpHeaders();
-		headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
-		headers.add("Pragma", "no-cache");
-		headers.add("Expires", "0");
-		return headers;
-	}
-
-	protected HttpHeaders getDownloadHeaders(final String filename) {
-		final HttpHeaders headers = new HttpHeaders();
-		headers.add("Content-Disposition", "attachment; filename=" + filename);
-		return headers;
-	}
 }
 
 
