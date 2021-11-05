@@ -17,8 +17,11 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import gr.sgdigital.common.base.BaseTestController;
 import gr.sgdigital.movies.domain.Movie;
+import gr.sgdigital.movies.service.EpisodeService;
 import gr.sgdigital.movies.service.GenreService;
 import gr.sgdigital.movies.service.MovieService;
+import gr.sgdigital.movies.service.SeasonService;
+import gr.sgdigital.movies.service.SerieService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -30,7 +33,16 @@ public class MovieControllerTest extends BaseTestController {
 	private GenreService genreService;
 
 	@MockBean
-	private MovieService moviesService;
+	private MovieService movieService;
+
+	@MockBean
+	private SerieService serieService;
+
+	@MockBean
+	private SeasonService seasonService;
+
+	@MockBean
+	private EpisodeService episodeService;
 
 	@Test
 	public void getAllMovies () throws Exception {
@@ -39,7 +51,7 @@ public class MovieControllerTest extends BaseTestController {
 		movies.add(makeMovie(1L, "Movie1"));
 		movies.add(makeMovie(2L, "Movie2"));
 
-		when(moviesService.findAll()).thenReturn(movies);
+		when(movieService.findAll()).thenReturn(movies);
 
 		mockMvc.perform(get("/api/movie"))
 			.andExpect(status().isOk())
@@ -50,7 +62,7 @@ public class MovieControllerTest extends BaseTestController {
 	public void getGenre () throws Exception {
 		Movie movie = makeMovie(1L, "Movie1");
 
-		when(moviesService.find(1L)).thenReturn(movie);
+		when(movieService.find(1L)).thenReturn(movie);
 
 		mockMvc.perform(get("/api/movie/1"))
 			.andExpect(status().isOk())

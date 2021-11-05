@@ -6,12 +6,9 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import gr.sgdigital.common.domain.BaseEntity;
 
@@ -26,8 +23,7 @@ public class Title extends BaseEntity<Long> {
 	@Column(length = 1024, nullable = true)
 	private String description;
 
-	@JsonInclude(Include.NON_NULL)
-	@OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<Genre> genres = new HashSet<Genre> ();
 
 	public String getTitle() {
@@ -48,6 +44,10 @@ public class Title extends BaseEntity<Long> {
 
 	public Set<Genre> getGenres() {
 		return genres;
+	}
+
+	public void setGenres(Set<Genre> genres) {
+		this.genres = genres;
 	}
 }
 

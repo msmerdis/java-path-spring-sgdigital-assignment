@@ -17,8 +17,11 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import gr.sgdigital.common.base.BaseTestController;
 import gr.sgdigital.movies.domain.Genre;
+import gr.sgdigital.movies.service.EpisodeService;
 import gr.sgdigital.movies.service.GenreService;
 import gr.sgdigital.movies.service.MovieService;
+import gr.sgdigital.movies.service.SeasonService;
+import gr.sgdigital.movies.service.SerieService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -30,7 +33,16 @@ public class GenreControllerTest extends BaseTestController {
 	private GenreService genreService;
 
 	@MockBean
-	private MovieService moviesService;
+	private MovieService movieService;
+
+	@MockBean
+	private SerieService serieService;
+
+	@MockBean
+	private SeasonService seasonService;
+
+	@MockBean
+	private EpisodeService episodeService;
 
 	@Test
 	public void getAllGenres () throws Exception {

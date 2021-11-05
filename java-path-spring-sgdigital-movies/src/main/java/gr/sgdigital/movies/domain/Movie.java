@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 	name = "genres",
 	joinTable = @JoinTable(
 		name = "tmoviegenres",
+		indexes = {@Index(columnList = "movieId,genreId")},
 		joinColumns = @JoinColumn(name="movieId"),
 		inverseJoinColumns = @JoinColumn(name="genreId")
 	)

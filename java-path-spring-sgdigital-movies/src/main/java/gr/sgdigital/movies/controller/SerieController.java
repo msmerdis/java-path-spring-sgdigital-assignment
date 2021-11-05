@@ -5,15 +5,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import gr.sgdigital.common.controller.BaseController;
-import gr.sgdigital.movies.domain.Movie;
-import gr.sgdigital.movies.service.MovieService;
+import gr.sgdigital.movies.domain.Serie;
+import gr.sgdigital.movies.service.SerieService;
 
 @RestController
-@RequestMapping("/api/movie")
-public class MovieController extends BaseController<Movie, Long> {
+@RequestMapping("/api/serie")
+public class SerieController extends BaseController<Serie, Long> {
 
 	@Autowired
-	public MovieController(MovieService service) {
+	public SerieController(SerieService service) {
 		super(service);
 	}
 
