@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import gr.sgdigital.common.transfer.status.SuccessStatus;
 
-public class ApiResponse<T> implements Serializable {
+public class ApiResponse<E> implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@JsonInclude(Include.NON_EMPTY)
@@ -17,7 +17,7 @@ public class ApiResponse<T> implements Serializable {
 	private LocalDateTime timestamp = LocalDateTime.now();
 
 	@JsonInclude(Include.NON_NULL)
-	final public T data;
+	final public E data;
 
 	@JsonInclude(Include.ALWAYS)
 	final public ApiStatus status;
@@ -26,17 +26,17 @@ public class ApiResponse<T> implements Serializable {
 		this (status, null);
 	}
 
-	public ApiResponse (T data) {
+	public ApiResponse (E data) {
 		this (new SuccessStatus(), data);
 	}
 
-	public ApiResponse (ApiStatus status, T data) {
+	public ApiResponse (ApiStatus status, E data) {
 		this.status    = status;
 		this.data      = data;
 		this.timestamp = LocalDateTime.now();
 	}
 
-	public ApiResponse (ApiStatus status, T data, LocalDateTime timestamp) {
+	public ApiResponse (ApiStatus status, E data, LocalDateTime timestamp) {
 		this.status    = status;
 		this.data      = data;
 		this.timestamp = timestamp;

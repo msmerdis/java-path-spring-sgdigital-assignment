@@ -1,14 +1,22 @@
 package gr.sgdigital.app.bootstrap;
 
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import gr.sgdigital.common.base.BaseComponent;
+import gr.sgdigital.movies.domain.Genre;
+import gr.sgdigital.movies.domain.Movie;
 import gr.sgdigital.movies.domain.Season;
 import gr.sgdigital.movies.domain.Serie;
+import gr.sgdigital.movies.domain.Title;
 import gr.sgdigital.movies.domain.TitleType;
 import gr.sgdigital.movies.service.EpisodeService;
 import gr.sgdigital.movies.service.GenreService;
@@ -29,64 +37,101 @@ public class GenerateContentRunner extends BaseComponent implements CommandLineR
 
 	Random random = new Random(System.currentTimeMillis());
 
+	static private List<String> genres = new LinkedList<String> ();
+
+	static {
+		Collections.addAll (
+			genres,
+			"Action",
+			"Adventure",
+			"Drama",
+			"Comedy",
+			"Action",
+			"Fantasy",
+			"Horror",
+			"Romance",
+			"Western",
+			"Thriller",
+			"Mystery",
+			"Sci-Fi"
+		);
+	}
+
+	@Transactional
 	@Override
 	public void run(String... args) {
+
 		generateGenres ();
 		generateMovies (10);
 		generateSeries (10, 1, 10, 10, 24);
 	}
 
 	private void generateGenres () {
-		genreService.loadOrCreate ("Action");
-		genreService.loadOrCreate ("Adventure");
-		genreService.loadOrCreate ("Drama");
-		genreService.loadOrCreate ("Comedy");
-		genreService.loadOrCreate ("Action");
-		genreService.loadOrCreate ("Fantasy");
-		genreService.loadOrCreate ("Horror");
-		genreService.loadOrCreate ("Romance");
-		genreService.loadOrCreate ("Western");
-		genreService.loadOrCreate ("Thriller");
-		genreService.loadOrCreate ("Mystery");
-		genreService.loadOrCreate ("Sci-Fi");
+		for (String genre : genres) {
+			genreService.loadOrCreate (genre);
+		}
 	}
 
 	private void generateMovies (int numMovies) {
+		logger.info("generate movies");
 		for (int i = 0; i < numMovies; i += 1) {
-			int releasedYear = 2000 + random.nextInt(20);
-
-			movieService.loadOrCreate(
-				titleService.loadOrCreate(
-					"title" + i,
-					TitleType.MOVIE,
-					"description" + i
-				), releasedYear
-			);
+			generateMovie ("Movie title " + i, "Movie Description " + i, 2000 + random.nextInt(20));
 		}
+	}
+
+	private void generateMovie (String title, String description, int releasedYear) {
+		Movie movie = movieService.loadOrCreate(
+			titleService.loadOrCreate(
+				title,
+				TitleType.MOVIE,
+				description
+			), releasedYear
+		);
+
+		applyRandomGenres (movie.getTitle().getGenres());
+
+		movieService.update(movie);
 	}
 
 	private void generateSeries (int numSeries, int minSeasons, int maxSeasons, int minEpisodes, int maxEpisodes) {
 		for (int i = 0; i < numSeries; i += 1) {
-			Serie serie = serieService.loadOrCreate(
-				titleService.loadOrCreate(
-					"title" + i,
-					TitleType.SERIE,
-					"description" + i
-				), random.nextBoolean()
-			);
 
 			int releasedYear = 2000 + random.nextInt(20);
 			int numSeasons = minSeasons + random.nextInt(maxSeasons - minSeasons + 1);
+			int numEpisodes = minEpisodes + random.nextInt(maxEpisodes - minEpisodes + 1);
 
-			for (int j = 0; j < numSeasons; j += 1) {
-				Season season = seasonService.loadOrCreate(serie, j + 1, "Season Name " + j, "Season Description " + j, releasedYear + j);
+			generateSerie ("Series title " + i, "Series Description " + i, releasedYear, numSeasons, numEpisodes);
+		}
+	}
 
-				int numEpisodes = minEpisodes + random.nextInt(maxEpisodes - minEpisodes + 1);
+	private void generateSerie (String title, String description, int releasedYear, int numSeasons, int numEpisodes) {
+		Serie serie = serieService.loadOrCreate(
+			titleService.loadOrCreate(
+				title,
+				TitleType.SERIE,
+				description
+			), random.nextBoolean()
+		);
 
-				for (int k = 0; j < numEpisodes; j += 1) {
-					episodeService.loadOrCreate(season, k, "Episode Name " + k, "Episode Description " + k, 1000 + random.nextInt(3000));
-				}
+		for (int j = 1; j <= numSeasons; j += 1) {
+			Season season = seasonService.loadOrCreate(serie, j, "Season Name " + j, "Season Description " + j, releasedYear + j);
+
+			for (int k = 1; k <= numEpisodes; k += 1) {
+				episodeService.loadOrCreate(season, k, "Episode Name " + k, "Episode Description " + k, 1000 + random.nextInt(3000));
 			}
+		}
+
+		applyRandomGenres (serie.getTitle().getGenres());
+
+		serieService.update(serie);
+	}
+
+	private void applyRandomGenres(Set<Genre> genreList) {
+		int max = random.nextInt(3);
+		Collections.shuffle(genres, random);
+
+		for (int i = 0; i < max; i += 1) {
+			genreList.add(genreService.loadOrCreate(genres.get(i)));
 		}
 	}
 }

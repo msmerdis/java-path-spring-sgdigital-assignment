@@ -1,14 +1,23 @@
 package gr.sgdigital.movies.domain;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Index;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import gr.sgdigital.common.domain.BaseEntity;
@@ -27,6 +36,11 @@ public class Serie extends BaseEntity<Long> {
 	@JoinColumn(name = "titleId", referencedColumnName = "Id")
 	private Title title;
 
+	@JsonIgnore
+	@Fetch(FetchMode.SELECT)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private Set<Season> seasons = new HashSet<Season> ();
+
 	public boolean isOngoing() {
 		return ongoing;
 	}
@@ -41,6 +55,14 @@ public class Serie extends BaseEntity<Long> {
 
 	public void setTitle(Title title) {
 		this.title = title;
+	}
+
+	public Set<Season> getSeasons() {
+		return seasons;
+	}
+
+	public void setSeasons(Set<Season> seasons) {
+		this.seasons = seasons;
 	}
 }
 
