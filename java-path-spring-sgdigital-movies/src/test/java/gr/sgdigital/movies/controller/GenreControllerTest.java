@@ -22,6 +22,7 @@ import gr.sgdigital.movies.service.GenreService;
 import gr.sgdigital.movies.service.MovieService;
 import gr.sgdigital.movies.service.SeasonService;
 import gr.sgdigital.movies.service.SerieService;
+import gr.sgdigital.movies.service.TitleService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -31,6 +32,9 @@ public class GenreControllerTest extends BaseTestController {
 
 	@MockBean
 	private GenreService genreService;
+
+	@MockBean
+	private TitleService titleService;
 
 	@MockBean
 	private MovieService movieService;

@@ -10,13 +10,12 @@ import gr.sgdigital.movies.service.MovieService;
 
 @RestController
 @RequestMapping("/api/movie")
-public class MovieController extends BaseController<Movie, Long> {
+public class MovieController extends BaseController<Movie, Long, MovieService> {
 
 	@Autowired
 	public MovieController(MovieService service) {
 		super(service);
 	}
-
 }
 
 

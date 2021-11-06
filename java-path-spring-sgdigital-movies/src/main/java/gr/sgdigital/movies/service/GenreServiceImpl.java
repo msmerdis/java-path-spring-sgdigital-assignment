@@ -8,7 +8,7 @@ import gr.sgdigital.movies.domain.Genre;
 import gr.sgdigital.movies.repository.GenreRepository;
 
 @Service
-public class GenreServiceImpl extends BaseServiceImpl<Genre, Integer> implements GenreService {
+public class GenreServiceImpl extends BaseServiceImpl<Genre, Integer, GenreRepository> implements GenreService {
 
 	@Autowired
 	public GenreServiceImpl(GenreRepository repository) {
@@ -16,8 +16,16 @@ public class GenreServiceImpl extends BaseServiceImpl<Genre, Integer> implements
 	}
 
 	@Override
-	public Genre findByName(String name) {
-		return ((GenreRepository)repository).findByName(name);
+	public Genre loadOrCreate(String name) {
+		Genre genre = repository.findByName(name);
+
+		if (genre == null) {
+			genre = new Genre ();
+			genre.setName(name);
+			genre = repository.save(genre);
+		}
+
+		return genre;
 	}
 }
 

@@ -10,7 +10,7 @@ import gr.sgdigital.movies.service.GenreService;
 
 @RestController
 @RequestMapping("/api/genre")
-public class GenreController extends BaseController<Genre, Integer> {
+public class GenreController extends BaseController<Genre, Integer, GenreService> {
 
 	@Autowired
 	public GenreController(GenreService service) {

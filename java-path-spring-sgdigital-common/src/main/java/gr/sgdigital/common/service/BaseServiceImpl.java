@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,11 +13,12 @@ import gr.sgdigital.common.base.BaseComponent;
 import gr.sgdigital.common.domain.BaseEntity;
 import gr.sgdigital.common.repository.BaseRepository;
 
-public abstract class BaseServiceImpl<E extends BaseEntity<I>, I> extends BaseComponent implements BaseService<E, I> {
+public abstract class BaseServiceImpl<E extends BaseEntity<I>, I, R extends BaseRepository<E, I>> extends BaseComponent implements BaseService<E, I> {
 
-	final protected BaseRepository<E, I> repository;
+	final protected R repository;
 
-	public BaseServiceImpl (BaseRepository<E, I> repository) {
+	@Autowired
+	public BaseServiceImpl (R repository) {
 		this.repository = repository;
 	}
 

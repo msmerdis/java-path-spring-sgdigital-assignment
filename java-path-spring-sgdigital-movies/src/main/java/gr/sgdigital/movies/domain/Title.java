@@ -1,18 +1,22 @@
 package gr.sgdigital.movies.domain;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Index;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import gr.sgdigital.common.domain.BaseEntity;
 
-@MappedSuperclass
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@Entity
+@Table(name = "ttitle", indexes = {@Index(columnList = "id")})
+@SequenceGenerator(name = "idGenerator", sequenceName = "TITLE_SEQ", initialValue = 100000, allocationSize = 1)
 public class Title extends BaseEntity<Long> {
 	private static final long serialVersionUID = 1L;
 
@@ -23,8 +27,8 @@ public class Title extends BaseEntity<Long> {
 	@Column(length = 1024, nullable = true)
 	private String description;
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private Set<Genre> genres = new HashSet<Genre> ();
+	@Enumerated(EnumType.ORDINAL)
+	private TitleType type;
 
 	public String getTitle() {
 		return title;
@@ -42,12 +46,12 @@ public class Title extends BaseEntity<Long> {
 		this.description = description;
 	}
 
-	public Set<Genre> getGenres() {
-		return genres;
+	public TitleType getType() {
+		return type;
 	}
 
-	public void setGenres(Set<Genre> genres) {
-		this.genres = genres;
+	public void setType(TitleType type) {
+		this.type = type;
 	}
 }
 

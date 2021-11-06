@@ -10,13 +10,12 @@ import gr.sgdigital.movies.service.SerieService;
 
 @RestController
 @RequestMapping("/api/serie")
-public class SerieController extends BaseController<Serie, Long> {
+public class SerieController extends BaseController<Serie, Long, SerieService> {
 
 	@Autowired
 	public SerieController(SerieService service) {
 		super(service);
 	}
-
 }
 
 

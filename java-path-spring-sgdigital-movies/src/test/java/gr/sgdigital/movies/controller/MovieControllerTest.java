@@ -17,11 +17,14 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import gr.sgdigital.common.base.BaseTestController;
 import gr.sgdigital.movies.domain.Movie;
+import gr.sgdigital.movies.domain.Title;
+import gr.sgdigital.movies.domain.TitleType;
 import gr.sgdigital.movies.service.EpisodeService;
 import gr.sgdigital.movies.service.GenreService;
 import gr.sgdigital.movies.service.MovieService;
 import gr.sgdigital.movies.service.SeasonService;
 import gr.sgdigital.movies.service.SerieService;
+import gr.sgdigital.movies.service.TitleService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -31,6 +34,9 @@ public class MovieControllerTest extends BaseTestController {
 
 	@MockBean
 	private GenreService genreService;
+
+	@MockBean
+	private TitleService titleService;
 
 	@MockBean
 	private MovieService movieService;
@@ -73,9 +79,21 @@ public class MovieControllerTest extends BaseTestController {
 		Movie movie = new Movie ();
 
 		movie.setId(id);
-		movie.setTitle(title);
+		movie.setReleasedYear(2001);
+		movie.setTitle(makeTitle(id, title));
 
 		return movie;
+	}
+
+	private Title makeTitle (Long id, String desc) {
+		Title title = new Title ();
+
+		title.setId(id);
+		title.setTitle(desc);
+		title.setType(TitleType.MOVIE);
+		title.setDescription(desc);
+
+		return title;
 	}
 }
 
