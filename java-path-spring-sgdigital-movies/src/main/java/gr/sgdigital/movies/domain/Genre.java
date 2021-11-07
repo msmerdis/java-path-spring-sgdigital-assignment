@@ -11,6 +11,8 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import gr.sgdigital.common.domain.BaseEntity;
+import gr.sgdigital.movies.transfer.GenreDetailViewDTO;
+import gr.sgdigital.movies.transfer.GenreSimpleViewDTO;
 
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
@@ -20,12 +22,15 @@ import gr.sgdigital.common.domain.BaseEntity;
 	uniqueConstraints = {@UniqueConstraint(columnNames = "name")}
 )
 @SequenceGenerator(name = "idGenerator", sequenceName = "GENRE_SEQ", initialValue = 1, allocationSize = 1)
-public class Genre extends BaseEntity <Integer> {
-	private static final long serialVersionUID = 1L;
+public class Genre extends BaseEntity <Integer, Genre, GenreSimpleViewDTO, GenreDetailViewDTO> {
 
 	@NotNull(message = "Genre must have a name")
 	@Column(length = 32, nullable = false)
 	private String name;
+
+	public Genre() {
+		super(GenreSimpleViewDTO.class, GenreDetailViewDTO.class);
+	}
 
 	public String getName() {
 		return name;
@@ -33,6 +38,26 @@ public class Genre extends BaseEntity <Integer> {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public GenreSimpleViewDTO simpleView() {
+		GenreSimpleViewDTO view = new GenreSimpleViewDTO ();
+
+		view.setGenreId(this.getId());
+		view.setGenreName(name);
+
+		return view;
+	}
+
+	@Override
+	public GenreDetailViewDTO detailView() {
+		GenreDetailViewDTO view = new GenreDetailViewDTO ();
+
+		view.setGenreId(this.getId());
+		view.setGenreName(name);
+
+		return view;
 	}
 }
 

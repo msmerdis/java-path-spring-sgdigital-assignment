@@ -19,11 +19,11 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import gr.sgdigital.common.domain.BaseEntity;
+import gr.sgdigital.movies.transfer.SeasonDetailViewDTO;
+import gr.sgdigital.movies.transfer.SeasonSimpleViewDTO;
 
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(
 	name = "tseason",
@@ -34,8 +34,7 @@ import gr.sgdigital.common.domain.BaseEntity;
 	}
 )
 @SequenceGenerator(name = "idGenerator", sequenceName = "SEASON_SEQ", initialValue = 300000, allocationSize = 1)
-public class Season extends BaseEntity<Long> {
-	private static final long serialVersionUID = 1L;
+public class Season extends BaseEntity <Long, Season, SeasonSimpleViewDTO, SeasonDetailViewDTO> {
 
 	@NotNull
 	@Column(name = "orderNo", nullable = false)
@@ -61,7 +60,7 @@ public class Season extends BaseEntity<Long> {
 	private Serie serie;
 
 	public Season () {
-		super ();
+		super(SeasonSimpleViewDTO.class, SeasonDetailViewDTO.class);
 	}
 
 	public int getOrder() {

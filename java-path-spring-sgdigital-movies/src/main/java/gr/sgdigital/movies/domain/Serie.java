@@ -18,16 +18,15 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import gr.sgdigital.common.domain.BaseEntity;
+import gr.sgdigital.movies.transfer.SerieDetailViewDTO;
+import gr.sgdigital.movies.transfer.SerieSimpleViewDTO;
 
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "tserie", indexes = {@Index(columnList = "id")})
 @SequenceGenerator(name = "idGenerator", sequenceName = "SERIE_SEQ", initialValue = 200000, allocationSize = 1)
-public class Serie extends BaseEntity<Long> {
-	private static final long serialVersionUID = 1L;
+public class Serie extends BaseEntity <Long, Serie, SerieSimpleViewDTO, SerieDetailViewDTO> {
 
 	@Column
 	private boolean ongoing;
@@ -40,6 +39,10 @@ public class Serie extends BaseEntity<Long> {
 	@Fetch(FetchMode.SELECT)
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Set<Season> seasons = new HashSet<Season> ();
+
+	public Serie () {
+		super (SerieSimpleViewDTO.class, SerieDetailViewDTO.class);
+	}
 
 	public boolean isOngoing() {
 		return ongoing;

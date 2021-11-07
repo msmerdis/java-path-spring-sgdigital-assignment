@@ -2,22 +2,29 @@ package gr.sgdigital.common.service;
 
 import java.util.List;
 
-public interface BaseService<E, I> {
-	E create(E entity);
+import gr.sgdigital.common.domain.BaseEntity;
+import gr.sgdigital.common.transfer.ApiStatus;
+import gr.sgdigital.common.transfer.BaseCreateDTO;
+import gr.sgdigital.common.transfer.BaseResponseDTO;
+import gr.sgdigital.common.transfer.BaseUpdateDTO;
 
-	List<E> createAll(List<E> entities);
+public interface BaseService<
+	Key,
+	Entity extends BaseEntity<Key, Entity, SimpleDTO, DetailDTO>,
+	CreateDTO extends BaseCreateDTO<Entity>,
+	UpdateDTO extends BaseUpdateDTO<Entity, Key>,
+	SimpleDTO extends BaseResponseDTO<Entity>,
+	DetailDTO extends BaseResponseDTO<Entity>
+> {
+	DetailDTO create(CreateDTO entity) throws ApiStatus, Exception;
 
-	void update(E entity);
+	void update(UpdateDTO entity) throws ApiStatus;
+	void delete(Key id) throws ApiStatus;
 
-	void delete(E entity);
+	boolean exists(Key id) throws ApiStatus;
+	DetailDTO find(Key id) throws ApiStatus;
 
-	void deleteById(I id);
-
-	boolean exists(E entity);
-
-	E find(I id);
-
-	List<E> findAll();
+	List<SimpleDTO> findAll() throws ApiStatus;
 }
 
 

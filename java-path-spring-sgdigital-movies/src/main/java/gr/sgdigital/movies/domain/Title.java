@@ -20,16 +20,14 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import gr.sgdigital.common.domain.BaseEntity;
+import gr.sgdigital.movies.transfer.TitleDetailViewDTO;
+import gr.sgdigital.movies.transfer.TitleSimpleViewDTO;
 
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "ttitle", indexes = {@Index(columnList = "id")})
 @SequenceGenerator(name = "idGenerator", sequenceName = "TITLE_SEQ", initialValue = 100000, allocationSize = 1)
-public class Title extends BaseEntity<Long> {
-	private static final long serialVersionUID = 1L;
+public class Title extends BaseEntity <Long, Title, TitleSimpleViewDTO, TitleDetailViewDTO> {
 
 	@NotNull(message = "Movie must have a title.")
 	@Column(length = 128, nullable = false)
@@ -49,6 +47,10 @@ public class Title extends BaseEntity<Long> {
 
 	@Enumerated(EnumType.ORDINAL)
 	private TitleType type;
+
+	public Title () {
+		super (TitleSimpleViewDTO.class, TitleDetailViewDTO.class);
+	}
 
 	public String getTitle() {
 		return title;
@@ -81,6 +83,7 @@ public class Title extends BaseEntity<Long> {
 	public void setGenres(Set<Genre> genres) {
 		this.genres = genres;
 	}
+
 }
 
 

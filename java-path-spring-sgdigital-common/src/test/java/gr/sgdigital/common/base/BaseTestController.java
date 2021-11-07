@@ -60,13 +60,16 @@ public class BaseTestController {
 	 * If not timestamps will not match causing tests to fail
 	 */
 	public String generateJson (ApiStatus status, Object data) throws JsonProcessingException {
-		var response = new ApiResponse<Object>(status, data);
+		return generateJson(new ApiResponse<Object>(status, data));
+	}
+	public String generateJson (Object data) throws JsonProcessingException {
 		var objectMapper = new ObjectMapper ();
 
 		objectMapper.addMixIn(LocalDateTime.class, MyMixInForIgnoreType.class);
 
-		return objectMapper.writeValueAsString(response);
+		return objectMapper.writeValueAsString(data);
 	}
+
 
 	@JsonIgnoreType
 	public class MyMixInForIgnoreType {}

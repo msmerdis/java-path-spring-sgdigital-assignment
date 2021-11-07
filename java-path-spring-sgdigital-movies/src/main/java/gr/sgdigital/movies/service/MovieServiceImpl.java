@@ -5,35 +5,28 @@ import org.springframework.stereotype.Service;
 
 import gr.sgdigital.common.service.BaseServiceImpl;
 import gr.sgdigital.movies.domain.Movie;
-import gr.sgdigital.movies.domain.Title;
 import gr.sgdigital.movies.repository.MovieRepository;
+import gr.sgdigital.movies.transfer.MovieCreateDTO;
+import gr.sgdigital.movies.transfer.MovieDetailViewDTO;
+import gr.sgdigital.movies.transfer.MovieSimpleViewDTO;
+import gr.sgdigital.movies.transfer.MovieUpdateDTO;
 
 @Service
-public class MovieServiceImpl extends BaseServiceImpl<Movie, Long, MovieRepository> implements MovieService {
+public class MovieServiceImpl extends BaseServiceImpl<
+	Long,
+	Movie,
+	MovieCreateDTO,
+	MovieUpdateDTO,
+	MovieSimpleViewDTO,
+	MovieDetailViewDTO,
+	MovieRepository
+> implements MovieService {
 
 	@Autowired
 	public MovieServiceImpl(MovieRepository repository) {
-		super(repository);
+		super(repository, Movie.class);
 	}
 
-	@Override
-	public Movie findByTitle(Title title) {
-		return repository.findByTitle(title);
-	}
-
-	@Override
-	public Movie loadOrCreate(Title title, int releaseYear) {
-		Movie movie = repository.findByTitle(title);
-
-		if (movie == null) {
-			movie = new Movie ();
-			movie.setTitle(title);
-			movie.setReleasedYear(releaseYear);
-			movie = repository.save(movie);
-		}
-
-		return movie;
-	}
 }
 
 

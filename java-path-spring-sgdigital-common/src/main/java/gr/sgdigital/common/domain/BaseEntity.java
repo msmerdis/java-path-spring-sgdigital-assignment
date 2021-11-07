@@ -1,6 +1,5 @@
 package gr.sgdigital.common.domain;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -16,17 +15,22 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import gr.sgdigital.common.transfer.BaseResponseDTO;
+
 /**
  * This class holds all common attributes a category in which products are organised.
  */
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public class BaseEntity<I> implements Serializable {
-	private static final long serialVersionUID = 1L;
-
+public abstract class BaseEntity<
+	Key,
+	Entity extends BaseEntity<Key, Entity, SimpleDTO, DetailDTO>,
+	SimpleDTO extends BaseResponseDTO<Entity>,
+	DetailDTO extends BaseResponseDTO<Entity>
+> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idGenerator")
-	protected I id;
+	protected Key id;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = true)
@@ -38,11 +42,49 @@ public class BaseEntity<I> implements Serializable {
 	@LastModifiedDate
 	protected Date updatedDate;
 
-	public I getId() {
+	private Class<SimpleDTO> simpleView;
+	private Class<DetailDTO> detailView;
+
+	public BaseEntity (Class<SimpleDTO> simpleView, Class<DetailDTO> detailView) {
+		this.simpleView = simpleView;
+		this.detailView = detailView;
+	}
+
+	@SuppressWarnings("unchecked")
+	public SimpleDTO simpleView () {
+		SimpleDTO view;
+
+		try {
+			view = simpleView.getDeclaredConstructor().newInstance();
+			view.updateFromEntity((Entity)this);
+		} catch (Exception e) {
+			e.printStackTrace();
+			view = null;
+		}
+
+		return view;
+	}
+
+	@SuppressWarnings("unchecked")
+	public DetailDTO detailView () {
+		DetailDTO view;
+
+		try {
+			view = detailView.getDeclaredConstructor().newInstance();
+			view.updateFromEntity((Entity)this);
+		} catch (Exception e) {
+			e.printStackTrace();
+			view = null;
+		}
+
+		return view;
+	}
+
+	public Key getId() {
 		return id;
 	}
 
-	public void setId(I id) {
+	public void setId(Key id) {
 		this.id = id;
 	}
 
@@ -70,7 +112,7 @@ public class BaseEntity<I> implements Serializable {
 			return false;
 
 		@SuppressWarnings("unchecked")
-		BaseEntity<I> other = (BaseEntity<I>) obj;
+		Entity other = (Entity) obj;
 
 		if (id == null) {
 			if (other.id != null)
