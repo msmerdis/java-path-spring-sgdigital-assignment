@@ -1,6 +1,7 @@
 package gr.sgdigital.movies.domain;
 
 public enum TitleType {
+	UNKNOWN ("Unknown"),
 	MOVIE ("Movie"),
 	SERIE ("TV Series");
 

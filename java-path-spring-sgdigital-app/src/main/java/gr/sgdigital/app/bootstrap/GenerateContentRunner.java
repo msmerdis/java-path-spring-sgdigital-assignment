@@ -21,6 +21,9 @@ import gr.sgdigital.movies.service.SeasonService;
 import gr.sgdigital.movies.service.SerieService;
 import gr.sgdigital.movies.service.TitleService;
 import gr.sgdigital.movies.transfer.GenreCreateDTO;
+import gr.sgdigital.movies.transfer.GenreDetailViewDTO;
+import gr.sgdigital.movies.transfer.GenreSimpleViewDTO;
+import gr.sgdigital.movies.transfer.GenreUpdateDTO;
 import gr.sgdigital.movies.transfer.MovieCreateDTO;
 import gr.sgdigital.movies.transfer.TitleCreateDTO;
 
@@ -58,17 +61,22 @@ public class GenerateContentRunner extends BaseComponent implements CommandLineR
 	@Override
 	public void run(String... args) throws Exception {
 		generateGenres ();
-	//	generateMovies (10);
+		generateMovies (10);
 	//	generateSeries (10, 1, 10, 10, 24);
 	}
 
 	@Transactional
 	private void generateGenres () throws Exception {
 		for (String genre : genres) {
-			GenreCreateDTO genreDTO = new GenreCreateDTO();
-			genreDTO.setName(genre);
-			genreService.create(genreDTO);
+			createGenre (genre);
 		}
+	}
+
+	private int createGenre (String genre) throws ApiStatus, Exception {
+		GenreCreateDTO genreDTO = new GenreCreateDTO();
+		genreDTO.setName(genre);
+		GenreDetailViewDTO view = genreService.create(genreDTO);
+		return view.getGenreId();
 	}
 
 	private void generateMovies (int numMovies) throws ApiStatus, Exception {
@@ -80,14 +88,11 @@ public class GenerateContentRunner extends BaseComponent implements CommandLineR
 
 	private void generateMovie (String title, String description, int releasedYear) throws ApiStatus, Exception {
 		MovieCreateDTO movieDTO = new MovieCreateDTO();
-		TitleCreateDTO titleDTO = new TitleCreateDTO();
 
-		titleDTO.setTitleName(title);
-		titleDTO.setTitleDesc(description);
-		titleDTO.setGenres(generateRandomListOfGenres());
-
+		movieDTO.setMovieName(title);
+		movieDTO.setMovieDesc(description);
+		movieDTO.setGenres(generateRandomListOfGenres());
 		movieDTO.setReleasedYear(releasedYear);
-		movieDTO.setTitleDTO(titleDTO);
 
 		movieService.create(movieDTO);
 	}

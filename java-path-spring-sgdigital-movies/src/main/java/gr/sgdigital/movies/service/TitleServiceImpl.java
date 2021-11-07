@@ -1,5 +1,7 @@
 package gr.sgdigital.movies.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -8,8 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import gr.sgdigital.common.service.BaseServiceImpl;
 import gr.sgdigital.common.transfer.ApiStatus;
-import gr.sgdigital.movies.domain.Genre;
+import gr.sgdigital.common.transfer.status.ConflictException;
+import gr.sgdigital.common.transfer.status.NotFoundException;
+import gr.sgdigital.movies.base.GenreDiffConsumer;
+import gr.sgdigital.movies.domain.Movie;
+import gr.sgdigital.movies.domain.Serie;
 import gr.sgdigital.movies.domain.Title;
+import gr.sgdigital.movies.domain.TitleType;
 import gr.sgdigital.movies.repository.TitleRepository;
 import gr.sgdigital.movies.transfer.TitleCreateDTO;
 import gr.sgdigital.movies.transfer.TitleDetailViewDTO;
@@ -39,15 +46,61 @@ public class TitleServiceImpl extends BaseServiceImpl<
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
 	public TitleDetailViewDTO create(TitleCreateDTO dto) throws ApiStatus, Exception {
+		return createTitle (dto, TitleType.UNKNOWN).detailView();
+	}
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
+	public void update(TitleUpdateDTO dto) throws ApiStatus {
+		Optional<Title> optionalTitle = repository.findById(dto.getId());
+
+		if (optionalTitle.isEmpty()) {
+			throw new NotFoundException("Title not found.");
+		}
+
+		updateTitle (optionalTitle.get(), dto);
+	}
+
+	@Override
+	public void createMovieTitle(Movie movie, TitleCreateDTO dto) {
+		movie.setTitle(createTitle (dto, TitleType.MOVIE));
+	}
+
+	@Override
+	public void createSerieTitle(Serie serie, TitleCreateDTO dto) {
+		serie.setTitle(createTitle (dto, TitleType.SERIE));
+	}
+
+	private Title createTitle (TitleCreateDTO dto, TitleType type) {
 		Title title = new Title ();
 
 		dto.updateEntity(title);
+		title.setType(type);
 
 		// we need to map title with the actual persistent entity
 		// for the save operation to be successful
 		genreService.mapGenreToTitle(title, dto.getGenres());
 
-		return repository.save(title).detailView();
+		return repository.saveAndFlush(title);
+	}
+
+	@Override
+	public void updateTitle(Title title, TitleUpdateDTO dto) throws ConflictException {
+		dto.updateEntity(title);
+
+		GenreDiffConsumer genreDiff = new GenreDiffConsumer(dto.getGenres());
+
+		// identify what genres have changed
+		title.getGenres().stream().forEach(genreDiff); 
+
+		// apply the changes to title
+		genreDiff.update(title, genreService);
+
+		try {
+			repository.saveAndFlush(title);
+		} catch (Exception e) {
+			throw new ConflictException("Cannot update entity");
+		}
 	}
 }
 

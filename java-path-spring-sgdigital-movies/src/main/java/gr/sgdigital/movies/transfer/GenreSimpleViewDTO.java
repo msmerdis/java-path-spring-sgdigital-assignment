@@ -31,6 +31,39 @@ public class GenreSimpleViewDTO extends BaseResponseDTO<Genre> {
 		this.genreName = genreName;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + genreId;
+		result = prime * result + ((genreName == null) ? 0 : genreName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		GenreSimpleViewDTO other = (GenreSimpleViewDTO) obj;
+		if (genreId != other.genreId)
+			return false;
+		if (genreName == null) {
+			if (other.genreName != null)
+				return false;
+		} else if (!genreName.equals(other.genreName))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "GenreSimpleViewDTO [genreId=" + genreId + ", genreName=" + genreName + "]";
+	}
+
 }
 
 

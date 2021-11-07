@@ -42,7 +42,7 @@ public class Title extends BaseEntity <Long, Title, TitleSimpleViewDTO, TitleDet
 		joinColumns = @JoinColumn(name="titleId"),
 		inverseJoinColumns = @JoinColumn(name="genreId")
 	)
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<Genre> genres = new HashSet<Genre> ();
 
 	@Enumerated(EnumType.ORDINAL)
