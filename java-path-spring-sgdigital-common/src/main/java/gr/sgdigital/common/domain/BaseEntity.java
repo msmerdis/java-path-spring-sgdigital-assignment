@@ -16,10 +16,14 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import gr.sgdigital.common.transfer.BaseResponseDTO;
+import lombok.Getter;
+import lombok.ToString;
 
 /**
  * This class holds all common attributes a category in which products are organised.
  */
+@Getter
+@ToString
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntity<
@@ -80,22 +84,6 @@ public abstract class BaseEntity<
 		return view;
 	}
 
-	public Key getId() {
-		return id;
-	}
-
-	public void setId(Key id) {
-		this.id = id;
-	}
-
-	public Date getCreatedDate() {
-		return createdDate;
-	}
-
-	public Date getUpdatedDate() {
-		return updatedDate;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -120,11 +108,6 @@ public abstract class BaseEntity<
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return this.getClass().getName() + " [id=" + id + ", createdDate=" + createdDate + ", updatedDate=" + updatedDate + "]";
 	}
 }
 

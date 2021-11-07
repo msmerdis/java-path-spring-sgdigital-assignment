@@ -3,7 +3,6 @@ package gr.sgdigital.movies.domain;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -23,7 +22,11 @@ import org.hibernate.annotations.FetchMode;
 import gr.sgdigital.common.domain.BaseEntity;
 import gr.sgdigital.movies.transfer.TitleDetailViewDTO;
 import gr.sgdigital.movies.transfer.TitleSimpleViewDTO;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "ttitle", indexes = {@Index(columnList = "id")})
 @SequenceGenerator(name = "idGenerator", sequenceName = "TITLE_SEQ", initialValue = 100000, allocationSize = 1)
@@ -51,39 +54,6 @@ public class Title extends BaseEntity <Long, Title, TitleSimpleViewDTO, TitleDet
 	public Title () {
 		super (TitleSimpleViewDTO.class, TitleDetailViewDTO.class);
 	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public TitleType getType() {
-		return type;
-	}
-
-	public void setType(TitleType type) {
-		this.type = type;
-	}
-
-	public Set<Genre> getGenres() {
-		return genres;
-	}
-
-	public void setGenres(Set<Genre> genres) {
-		this.genres = genres;
-	}
-
 }
 
 

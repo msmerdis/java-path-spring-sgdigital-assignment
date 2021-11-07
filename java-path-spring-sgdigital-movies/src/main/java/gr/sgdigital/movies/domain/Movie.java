@@ -12,7 +12,11 @@ import javax.persistence.Table;
 import gr.sgdigital.common.domain.BaseEntity;
 import gr.sgdigital.movies.transfer.MovieDetailViewDTO;
 import gr.sgdigital.movies.transfer.MovieSimpleViewDTO;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "tmovie", indexes = {@Index(columnList = "id")})
 @SequenceGenerator(name = "idGenerator", sequenceName = "MOVIE_SEQ", initialValue = 100000, allocationSize = 1)
@@ -26,22 +30,6 @@ public class Movie extends BaseEntity <Long, Movie, MovieSimpleViewDTO, MovieDet
 
 	public Movie () {
 		super (MovieSimpleViewDTO.class, MovieDetailViewDTO.class);
-	}
-
-	public int getReleasedYear() {
-		return releasedYear;
-	}
-
-	public void setReleasedYear(int releasedYear) {
-		this.releasedYear = releasedYear;
-	}
-
-	public Title getTitle() {
-		return title;
-	}
-
-	public void setTitle(Title title) {
-		this.title = title;
 	}
 }
 

@@ -6,7 +6,15 @@ import javax.validation.constraints.Positive;
 
 import gr.sgdigital.common.transfer.BaseUpdateDTO;
 import gr.sgdigital.movies.domain.Episode;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode(callSuper = false)
 public class EpisodeUpdateDTO extends BaseUpdateDTO<Episode, Long> {
 	private static final long serialVersionUID = 1L;
 
@@ -25,31 +33,6 @@ public class EpisodeUpdateDTO extends BaseUpdateDTO<Episode, Long> {
 		entity.setDesc(desc);
 		entity.setDuration(duration);
 	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDesc() {
-		return desc;
-	}
-
-	public void setDesc(String desc) {
-		this.desc = desc;
-	}
-
-	public int getDuration() {
-		return duration;
-	}
-
-	public void setDuration(int duration) {
-		this.duration = duration;
-	}
-
 }
 
 

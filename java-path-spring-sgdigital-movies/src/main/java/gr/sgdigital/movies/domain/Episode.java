@@ -15,7 +15,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import gr.sgdigital.common.domain.BaseEntity;
 import gr.sgdigital.movies.transfer.EpisodeDetailViewDTO;
 import gr.sgdigital.movies.transfer.EpisodeSimpleViewDTO;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(
 	name = "tepisode",
@@ -49,47 +53,6 @@ public class Episode extends BaseEntity <Long, Episode, EpisodeSimpleViewDTO, Ep
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "seasonId", referencedColumnName = "Id")
 	private Season season;
-
-	public int getOrder() {
-		return order;
-	}
-
-	public void setOrder(int order) {
-		this.order = order;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDesc() {
-		return desc;
-	}
-
-	public void setDesc(String desc) {
-		this.desc = desc;
-	}
-
-	public int getDuration() {
-		return duration;
-	}
-
-	public void setDuration(int duration) {
-		this.duration = duration;
-	}
-
-	public Season getSeason() {
-		return season;
-	}
-
-	public void setSeason(Season season) {
-		this.season = season;
-	}
-
 }
 
 

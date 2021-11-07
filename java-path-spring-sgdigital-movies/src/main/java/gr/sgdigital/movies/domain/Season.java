@@ -23,7 +23,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import gr.sgdigital.common.domain.BaseEntity;
 import gr.sgdigital.movies.transfer.SeasonDetailViewDTO;
 import gr.sgdigital.movies.transfer.SeasonSimpleViewDTO;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(
 	name = "tseason",
@@ -61,54 +65,6 @@ public class Season extends BaseEntity <Long, Season, SeasonSimpleViewDTO, Seaso
 
 	public Season () {
 		super(SeasonSimpleViewDTO.class, SeasonDetailViewDTO.class);
-	}
-
-	public int getOrder() {
-		return order;
-	}
-
-	public void setOrder(int order) {
-		this.order = order;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDesc() {
-		return desc;
-	}
-
-	public void setDesc(String desc) {
-		this.desc = desc;
-	}
-
-	public int getReleasedYear() {
-		return releasedYear;
-	}
-
-	public void setReleasedYear(int releasedYear) {
-		this.releasedYear = releasedYear;
-	}
-
-	public Serie getSerie() {
-		return serie;
-	}
-
-	public void setSerie(Serie serie) {
-		this.serie = serie;
-	}
-
-	public Set<Episode> getEpisodes() {
-		return episodes;
-	}
-
-	public void setEpisodes(Set<Episode> episodes) {
-		this.episodes = episodes;
 	}
 }
 

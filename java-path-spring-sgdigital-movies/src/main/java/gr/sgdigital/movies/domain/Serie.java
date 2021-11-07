@@ -22,7 +22,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import gr.sgdigital.common.domain.BaseEntity;
 import gr.sgdigital.movies.transfer.SerieDetailViewDTO;
 import gr.sgdigital.movies.transfer.SerieSimpleViewDTO;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "tserie", indexes = {@Index(columnList = "id")})
 @SequenceGenerator(name = "idGenerator", sequenceName = "SERIE_SEQ", initialValue = 200000, allocationSize = 1)
@@ -42,30 +46,6 @@ public class Serie extends BaseEntity <Long, Serie, SerieSimpleViewDTO, SerieDet
 
 	public Serie () {
 		super (SerieSimpleViewDTO.class, SerieDetailViewDTO.class);
-	}
-
-	public boolean isOngoing() {
-		return ongoing;
-	}
-
-	public void setOngoing(boolean ongoing) {
-		this.ongoing = ongoing;
-	}
-
-	public Title getTitle() {
-		return title;
-	}
-
-	public void setTitle(Title title) {
-		this.title = title;
-	}
-
-	public Set<Season> getSeasons() {
-		return seasons;
-	}
-
-	public void setSeasons(Set<Season> seasons) {
-		this.seasons = seasons;
 	}
 }
 

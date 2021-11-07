@@ -8,13 +8,14 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import gr.sgdigital.common.domain.BaseEntity;
 import gr.sgdigital.movies.transfer.GenreDetailViewDTO;
 import gr.sgdigital.movies.transfer.GenreSimpleViewDTO;
+import lombok.Getter;
+import lombok.Setter;
 
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@Getter
+@Setter
 @Entity
 @Table(
 	name = "tgenre",
@@ -38,26 +39,6 @@ public class Genre extends BaseEntity <Integer, Genre, GenreSimpleViewDTO, Genre
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	@Override
-	public GenreSimpleViewDTO simpleView() {
-		GenreSimpleViewDTO view = new GenreSimpleViewDTO ();
-
-		view.setGenreId(this.getId());
-		view.setGenreName(name);
-
-		return view;
-	}
-
-	@Override
-	public GenreDetailViewDTO detailView() {
-		GenreDetailViewDTO view = new GenreDetailViewDTO ();
-
-		view.setGenreId(this.getId());
-		view.setGenreName(name);
-
-		return view;
 	}
 }
 

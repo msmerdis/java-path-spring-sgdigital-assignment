@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,20 +20,16 @@ import gr.sgdigital.movies.service.GenreService;
 import gr.sgdigital.movies.service.MovieService;
 import gr.sgdigital.movies.service.SeasonService;
 import gr.sgdigital.movies.service.SerieService;
-import gr.sgdigital.movies.service.TitleService;
 import gr.sgdigital.movies.transfer.GenreCreateDTO;
 import gr.sgdigital.movies.transfer.GenreDetailViewDTO;
-import gr.sgdigital.movies.transfer.GenreSimpleViewDTO;
-import gr.sgdigital.movies.transfer.GenreUpdateDTO;
 import gr.sgdigital.movies.transfer.MovieCreateDTO;
-import gr.sgdigital.movies.transfer.TitleCreateDTO;
 
 @Component
+@Profile("test-data")
 public class GenerateContentRunner extends BaseComponent implements CommandLineRunner {
 
 	@Autowired private GenreService genreService;
 	@Autowired private MovieService movieService;
-	@Autowired private TitleService titleService;
 	@Autowired private SerieService serieService;
 	@Autowired private SeasonService seasonService;
 	@Autowired private EpisodeService episodeService;

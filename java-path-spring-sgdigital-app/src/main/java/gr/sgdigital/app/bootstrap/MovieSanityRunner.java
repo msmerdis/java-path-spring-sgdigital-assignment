@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import gr.sgdigital.common.base.BaseComponent;
@@ -16,6 +17,7 @@ import gr.sgdigital.movies.transfer.MovieDetailViewDTO;
 import gr.sgdigital.movies.transfer.MovieUpdateDTO;
 
 @Component
+@Profile("sanity")
 public class MovieSanityRunner extends BaseComponent implements CommandLineRunner {
 
 	@Autowired private MovieService movieService;
