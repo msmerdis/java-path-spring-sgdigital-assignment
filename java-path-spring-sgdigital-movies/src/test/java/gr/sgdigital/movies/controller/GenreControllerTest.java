@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import gr.sgdigital.common.base.BaseTestController;
+import gr.sgdigital.movies.service.CrewService;
 import gr.sgdigital.movies.service.EpisodeService;
 import gr.sgdigital.movies.service.GenreService;
 import gr.sgdigital.movies.service.MovieService;
@@ -56,6 +57,9 @@ public class GenreControllerTest extends BaseTestController {
 
 	@MockBean
 	private EpisodeService episodeService;
+
+	@MockBean
+	private CrewService crewService;
 
 	@Test
 	public void getAllGenres () throws Exception {

@@ -8,7 +8,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -35,7 +34,6 @@ public class Episode extends BaseEntity <Long, Episode, EpisodeSimpleViewDTO, Ep
 	@Column(name = "orderNo", nullable = false)
 	private int order;
 
-	@NotNull(message = "Episode's name must be present")
 	@Column(length = 128, nullable = false)
 	private String name;
 

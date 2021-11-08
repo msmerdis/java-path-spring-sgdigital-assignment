@@ -1,5 +1,6 @@
 package gr.sgdigital.app.bootstrap;
 
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -15,11 +16,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import gr.sgdigital.common.base.BaseComponent;
 import gr.sgdigital.common.transfer.ApiStatus;
+import gr.sgdigital.movies.base.Formats;
+import gr.sgdigital.movies.service.CrewService;
 import gr.sgdigital.movies.service.EpisodeService;
 import gr.sgdigital.movies.service.GenreService;
 import gr.sgdigital.movies.service.MovieService;
 import gr.sgdigital.movies.service.SeasonService;
 import gr.sgdigital.movies.service.SerieService;
+import gr.sgdigital.movies.transfer.CrewCreateDTO;
+import gr.sgdigital.movies.transfer.CrewDetailViewDTO;
 import gr.sgdigital.movies.transfer.EpisodeCreateDTO;
 import gr.sgdigital.movies.transfer.GenreCreateDTO;
 import gr.sgdigital.movies.transfer.GenreDetailViewDTO;
@@ -38,6 +43,7 @@ public class GenerateContentRunner extends BaseComponent implements CommandLineR
 	@Autowired private SerieService serieService;
 	@Autowired private SeasonService seasonService;
 	@Autowired private EpisodeService episodeService;
+	@Autowired private CrewService crewService;
 
 	Random random = new Random(System.currentTimeMillis());
 
@@ -65,6 +71,7 @@ public class GenerateContentRunner extends BaseComponent implements CommandLineR
 		generateGenres ();
 		generateMovies (10);
 		generateSeries (10, 1, 10, 10, 24);
+		generateCrew (100);
 	}
 
 	@Transactional
@@ -164,6 +171,23 @@ public class GenerateContentRunner extends BaseComponent implements CommandLineR
 		}
 
 		return genreList;
+	}
+
+	private void generateCrew (int numCrew) throws ApiStatus, Exception {
+		for (int i = 1; i <= numCrew; i += 1) {
+			generateCrew ("First name " + i, "Last name " + i, "Middle name " + i, "2000-01-" + (10 + random.nextInt(21)));
+		}
+	}
+
+	private void generateCrew(String firstname, String lastname, String middlename, String birthDate) throws ApiStatus, Exception {
+		CrewCreateDTO crewDTO = new CrewCreateDTO();
+  
+		crewDTO.setFirstName(firstname);
+		crewDTO.setLastName(lastname);
+		crewDTO.setMiddleName(middlename);
+		crewDTO.setBirthDate(new SimpleDateFormat(Formats.DATE_FORMAT).parse(birthDate));
+
+		CrewDetailViewDTO view = crewService.create(crewDTO);
 	}
 }
 
