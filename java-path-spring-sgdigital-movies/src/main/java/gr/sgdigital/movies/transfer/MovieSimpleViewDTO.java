@@ -19,6 +19,7 @@ import lombok.ToString;
 public class MovieSimpleViewDTO extends BaseResponseDTO<Movie> {
 	private static final long serialVersionUID = 1L;
 
+	private Long   titleId;
 	private Long   movieId;
 	private String movieName;
 	private String movieDesc;
@@ -29,6 +30,7 @@ public class MovieSimpleViewDTO extends BaseResponseDTO<Movie> {
 	public void updateFromEntity(Movie movie) {
 		Title title = movie.getTitle();
 
+		titleId      = title.getId();
 		movieId      = movie.getId();
 		movieName    = title.getTitle();
 		movieDesc    = title.getDescription();

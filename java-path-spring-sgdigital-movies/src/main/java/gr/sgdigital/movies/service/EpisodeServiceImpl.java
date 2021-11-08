@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import gr.sgdigital.common.service.BaseServiceImpl;
+import gr.sgdigital.common.service.AbstractServiceImpl;
 import gr.sgdigital.common.transfer.ApiStatus;
 import gr.sgdigital.movies.domain.Episode;
 import gr.sgdigital.movies.repository.EpisodeRepository;
@@ -16,7 +16,7 @@ import gr.sgdigital.movies.transfer.EpisodeSimpleViewDTO;
 import gr.sgdigital.movies.transfer.EpisodeUpdateDTO;
 
 @Service
-public class EpisodeServiceImpl extends BaseServiceImpl<
+public class EpisodeServiceImpl extends AbstractServiceImpl<
 	Long,
 	Episode,
 	EpisodeCreateDTO,

@@ -33,33 +33,36 @@ public class CrewRoleSanityRunner extends BaseComponent implements CommandLineRu
 		checkCrewRole (id, "ToDelete", "CrewRole update did not store the correct name");
 
 		// delete the crewRole
-		crewRoleService.delete(id);
-
-		// verify the crewRole is gone
-		if (crewRoleService.exists(id)) {
-			throw new Exception ("CrewRole delete did not actually delete the crewRole");
-		}
+		deleteCrewRole (id);
 	}
 
-	private int createCrewRole (String crewRole) throws ApiStatus, Exception {
+	public int createCrewRole (String crewRole) throws ApiStatus, Exception {
 		CrewRoleCreateDTO crewRoleDTO = new CrewRoleCreateDTO();
 		crewRoleDTO.setName(crewRole);
 		CrewRoleDetailViewDTO view = crewRoleService.create(crewRoleDTO);
 		return view.getCrewRoleId();
 	}
 
-	private void checkCrewRole (int id, String crewRole, String error) throws ApiStatus, Exception {
+	public void checkCrewRole (int id, String crewRole, String error) throws ApiStatus, Exception {
 		if (!crewRoleService.find(id).getCrewRoleName().equals(crewRole)) {
 			throw new Exception (error);
 		}
 	}
-
 
 	private void updateCrewRole (int id, String crewRole) throws ApiStatus, Exception {
 		CrewRoleUpdateDTO crewRoleDTO = new CrewRoleUpdateDTO();
 		crewRoleDTO.setId(id);
 		crewRoleDTO.setName(crewRole);
 		crewRoleService.update(crewRoleDTO);
+	}
+
+	public void deleteCrewRole (int id) throws Exception {
+		crewRoleService.delete(id);
+
+		// verify the crewRole is gone
+		if (crewRoleService.exists(id)) {
+			throw new Exception ("CrewRole delete did not actually delete the crewRole");
+		}
 	}
 }
 

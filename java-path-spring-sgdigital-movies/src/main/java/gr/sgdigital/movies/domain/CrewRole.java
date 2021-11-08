@@ -1,11 +1,20 @@
 package gr.sgdigital.movies.domain;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Index;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import gr.sgdigital.common.domain.BaseEntity;
 import gr.sgdigital.movies.transfer.CrewRoleDetailViewDTO;
@@ -27,16 +36,12 @@ public class CrewRole extends BaseEntity <Integer, CrewRole, CrewRoleSimpleViewD
 	@Column(length = 32, nullable = false)
 	private String name;
 
+	@Fetch(FetchMode.SELECT)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "crewRole")
+	private List<TitleCrew> titleCrew = new LinkedList<TitleCrew>();
+
 	public CrewRole() {
 		super(CrewRoleSimpleViewDTO.class, CrewRoleDetailViewDTO.class);
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 }
 

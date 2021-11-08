@@ -18,9 +18,9 @@ public class CrewRoleSimpleViewDTO extends BaseResponseDTO<CrewRole> {
 	private String crewRoleName;
 
 	@Override
-	public void updateFromEntity(CrewRole genre) {
-		crewRoleId   = genre.getId();
-		crewRoleName = genre.getName();
+	public void updateFromEntity(CrewRole crewRole) {
+		crewRoleId   = crewRole.getId();
+		crewRoleName = crewRole.getName();
 	}
 }
 

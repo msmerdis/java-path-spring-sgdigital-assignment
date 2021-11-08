@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import gr.sgdigital.common.controller.BaseController;
+import gr.sgdigital.common.controller.AbstractController;
 import gr.sgdigital.movies.domain.Crew;
 import gr.sgdigital.movies.service.CrewService;
 import gr.sgdigital.movies.transfer.CrewCreateDTO;
@@ -14,7 +14,7 @@ import gr.sgdigital.movies.transfer.CrewUpdateDTO;
 
 @RestController
 @RequestMapping("/api/crew")
-public class CrewController extends BaseController<
+public class CrewController extends AbstractController<
 	Long,
 	Crew,
 	CrewCreateDTO,

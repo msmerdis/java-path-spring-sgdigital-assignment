@@ -30,6 +30,7 @@ import gr.sgdigital.movies.service.GenreService;
 import gr.sgdigital.movies.service.MovieService;
 import gr.sgdigital.movies.service.SeasonService;
 import gr.sgdigital.movies.service.SerieService;
+import gr.sgdigital.movies.service.TitleCrewService;
 import gr.sgdigital.movies.service.TitleService;
 import gr.sgdigital.movies.transfer.CrewCreateDTO;
 import gr.sgdigital.movies.transfer.CrewDetailViewDTO;
@@ -65,6 +66,9 @@ public class CrewControllerTest extends BaseTestController {
 
 	@MockBean
 	private CrewRoleService crewRoleService;
+
+	@MockBean
+	private TitleCrewService titleCrewService;
 
 	@Test
 	public void getAllCrews () throws Exception {

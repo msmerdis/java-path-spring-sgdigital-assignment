@@ -80,19 +80,19 @@ public class EpisodeSanityRunner extends BaseComponent implements CommandLineRun
 		EpisodeDetailViewDTO theEpisode = episodeService.find(id.episodeId);
 
 		if (theEpisode.getEpisodeId().longValue() != id.episodeId) {
-			throw new Exception (error + "(1)");
+			throw new Exception (error);
 		}
 		if (!theEpisode.getEpisodeName().equals(episode)) {
-			throw new Exception (error + "(2)");
+			throw new Exception (error);
 		}
 		if (!theEpisode.getEpisodeDesc().equals(descr)) {
-			throw new Exception (error + "(3)");
+			throw new Exception (error);
 		}
 		if (theEpisode.getDuration() != duration) {
-			throw new Exception (error + "(4)");
+			throw new Exception (error);
 		}
 		if (theEpisode.getSeasonId().compareTo(id.seasonId.seasonId) != 0) {
-			throw new Exception (error + "(6)");
+			throw new Exception (error);
 		}
 	}
 

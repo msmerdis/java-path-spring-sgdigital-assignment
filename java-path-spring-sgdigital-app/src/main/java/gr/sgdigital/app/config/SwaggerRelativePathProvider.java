@@ -22,3 +22,4 @@ public class SwaggerRelativePathProvider extends RelativePathProvider {
 }
 
 
+

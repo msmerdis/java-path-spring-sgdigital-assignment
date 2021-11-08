@@ -43,15 +43,10 @@ public class TitleSanityRunner extends BaseComponent implements CommandLineRunne
 		checkTitle (id, "Title update did not store the correct value", "ToDelete", "ToDeleteDesc", "Comedy", "Horror");
 
 		// delete the title
-		titleService.delete(id);
-
-		// verify the title is gone
-		if (titleService.exists(id)) {
-			throw new Exception ("Title delete did not actually delete the title");
-		}
+		deleteTitle (id);
 	}
 
-	private long createTitle (String title, String descr, String... genres) throws ApiStatus, Exception {
+	public long createTitle (String title, String descr, String... genres) throws ApiStatus, Exception {
 		TitleCreateDTO titleDTO = new TitleCreateDTO();
 		titleDTO.setTitleName(title);
 		titleDTO.setTitleDesc(descr);
@@ -61,7 +56,7 @@ public class TitleSanityRunner extends BaseComponent implements CommandLineRunne
 		return view.getTitleId();
 	}
 
-	private void checkTitle (long id, String error, String title, String descr, String... genres) throws ApiStatus, Exception {
+	public void checkTitle (long id, String error, String title, String descr, String... genres) throws ApiStatus, Exception {
 		TitleDetailViewDTO theTitle = titleService.find(id);
 		Set<String> genreSet = Arrays.stream(genres).collect(Collectors.toSet());
 
@@ -89,6 +84,15 @@ public class TitleSanityRunner extends BaseComponent implements CommandLineRunne
 		titleDTO.setTitleDesc(descr);
 		titleDTO.setGenres(Arrays.stream(genres).collect(Collectors.toSet()));
 		titleService.update(titleDTO);
+	}
+
+	public void deleteTitle (long id) throws Exception {
+		titleService.delete(id);
+
+		// verify the title is gone
+		if (titleService.exists(id)) {
+			throw new Exception ("Title delete did not actually delete the title");
+		}
 	}
 }
 

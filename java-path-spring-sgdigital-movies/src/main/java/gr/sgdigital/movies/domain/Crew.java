@@ -1,13 +1,21 @@
 package gr.sgdigital.movies.domain;
 
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Index;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import gr.sgdigital.common.domain.BaseEntity;
 import gr.sgdigital.movies.transfer.CrewDetailViewDTO;
@@ -41,6 +49,10 @@ public class Crew extends BaseEntity <Long, Crew, CrewSimpleViewDTO, CrewDetailV
 
 	@Column(nullable = true)
 	private Date birthDate;
+
+	@Fetch(FetchMode.SELECT)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "crew")
+	private List<TitleCrew> titleCrew = new LinkedList<TitleCrew>();
 
 	public Crew() {
 		super(CrewSimpleViewDTO.class, CrewDetailViewDTO.class);

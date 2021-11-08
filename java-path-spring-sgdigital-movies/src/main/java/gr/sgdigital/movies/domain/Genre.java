@@ -32,14 +32,6 @@ public class Genre extends BaseEntity <Integer, Genre, GenreSimpleViewDTO, Genre
 	public Genre() {
 		super(GenreSimpleViewDTO.class, GenreDetailViewDTO.class);
 	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
 }
 
 

@@ -21,6 +21,7 @@ import lombok.ToString;
 public class SerieSimpleViewDTO extends BaseResponseDTO<Serie> {
 	private static final long serialVersionUID = 1L;
 
+	private Long    titleId;
 	private Long    serieId;
 	private String  serieName;
 	private String  serieDesc;
@@ -33,6 +34,7 @@ public class SerieSimpleViewDTO extends BaseResponseDTO<Serie> {
 	public void updateFromEntity(Serie serie) {
 		Title title = serie.getTitle();
 
+		titleId   = title.getId();
 		serieId   = serie.getId();
 		serieName = title.getTitle();
 		serieDesc = title.getDescription();

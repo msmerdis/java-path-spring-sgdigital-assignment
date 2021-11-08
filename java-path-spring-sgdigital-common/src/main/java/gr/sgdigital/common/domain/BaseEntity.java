@@ -1,87 +1,32 @@
 package gr.sgdigital.common.domain;
 
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import gr.sgdigital.common.transfer.BaseResponseDTO;
 import lombok.Getter;
 import lombok.ToString;
 
 /**
- * This class holds all common attributes a category in which products are organised.
+ * This class a base entity for non composite keys
  */
 @Getter
 @ToString
 @MappedSuperclass
-@EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntity<
 	Key,
 	Entity extends BaseEntity<Key, Entity, SimpleDTO, DetailDTO>,
 	SimpleDTO extends BaseResponseDTO<Entity>,
 	DetailDTO extends BaseResponseDTO<Entity>
-> {
+> extends AbstractEntity <Key, Entity, SimpleDTO, DetailDTO> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idGenerator")
 	protected Key id;
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(nullable = true)
-	@CreatedDate
-	protected Date createdDate;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(nullable = true)
-	@LastModifiedDate
-	protected Date updatedDate;
-
-	private Class<SimpleDTO> simpleView;
-	private Class<DetailDTO> detailView;
-
 	public BaseEntity (Class<SimpleDTO> simpleView, Class<DetailDTO> detailView) {
-		this.simpleView = simpleView;
-		this.detailView = detailView;
-	}
-
-	@SuppressWarnings("unchecked")
-	public SimpleDTO simpleView () {
-		SimpleDTO view;
-
-		try {
-			view = simpleView.getDeclaredConstructor().newInstance();
-			view.updateFromEntity((Entity)this);
-		} catch (Exception e) {
-			e.printStackTrace();
-			view = null;
-		}
-
-		return view;
-	}
-
-	@SuppressWarnings("unchecked")
-	public DetailDTO detailView () {
-		DetailDTO view;
-
-		try {
-			view = detailView.getDeclaredConstructor().newInstance();
-			view.updateFromEntity((Entity)this);
-		} catch (Exception e) {
-			e.printStackTrace();
-			view = null;
-		}
-
-		return view;
+		super (simpleView, detailView);
 	}
 
 	@Override

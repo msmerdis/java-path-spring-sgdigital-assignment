@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import gr.sgdigital.common.service.BaseServiceImpl;
+import gr.sgdigital.common.service.AbstractServiceImpl;
 import gr.sgdigital.common.transfer.ApiStatus;
 import gr.sgdigital.common.transfer.status.ConflictException;
 import gr.sgdigital.common.transfer.status.NotFoundException;
@@ -22,7 +22,7 @@ import gr.sgdigital.movies.transfer.TitleCreateDTO;
 import gr.sgdigital.movies.transfer.TitleUpdateDTO;
 
 @Service
-public class MovieServiceImpl extends BaseServiceImpl<
+public class MovieServiceImpl extends AbstractServiceImpl<
 	Long,
 	Movie,
 	MovieCreateDTO,

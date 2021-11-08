@@ -6,7 +6,7 @@ import java.util.Set;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
 
-import gr.sgdigital.common.transfer.BaseCreateDTO;
+import gr.sgdigital.common.transfer.AbstractCreateDTO;
 import gr.sgdigital.movies.domain.Movie;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -17,7 +17,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @EqualsAndHashCode
-public class MovieCreateDTO implements BaseCreateDTO<Movie> {
+public class MovieCreateDTO implements AbstractCreateDTO<Movie> {
 	private static final long serialVersionUID = 1L;
 
 	@NotEmpty(message = "Movie must have a name.")

@@ -6,7 +6,7 @@ import javax.validation.constraints.Positive;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import gr.sgdigital.common.transfer.BaseCreateDTO;
+import gr.sgdigital.common.transfer.AbstractCreateDTO;
 import gr.sgdigital.movies.domain.Episode;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -17,7 +17,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @EqualsAndHashCode
-public class EpisodeCreateDTO implements BaseCreateDTO<Episode> {
+public class EpisodeCreateDTO implements AbstractCreateDTO<Episode> {
 	private static final long serialVersionUID = 1L;
 
 	private long seasonId;

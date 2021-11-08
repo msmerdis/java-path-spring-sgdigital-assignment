@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import gr.sgdigital.common.service.BaseServiceImpl;
+import gr.sgdigital.common.service.AbstractServiceImpl;
 import gr.sgdigital.common.transfer.ApiStatus;
 import gr.sgdigital.common.transfer.status.ConflictException;
 import gr.sgdigital.common.transfer.status.NotFoundException;
@@ -16,6 +16,7 @@ import gr.sgdigital.movies.base.GenreDiffConsumer;
 import gr.sgdigital.movies.domain.Movie;
 import gr.sgdigital.movies.domain.Serie;
 import gr.sgdigital.movies.domain.Title;
+import gr.sgdigital.movies.domain.TitleCrew;
 import gr.sgdigital.movies.domain.TitleType;
 import gr.sgdigital.movies.repository.TitleRepository;
 import gr.sgdigital.movies.transfer.TitleCreateDTO;
@@ -24,7 +25,7 @@ import gr.sgdigital.movies.transfer.TitleSimpleViewDTO;
 import gr.sgdigital.movies.transfer.TitleUpdateDTO;
 
 @Service
-public class TitleServiceImpl extends BaseServiceImpl<
+public class TitleServiceImpl extends AbstractServiceImpl<
 	Long,
 	Title,
 	TitleCreateDTO,
@@ -101,6 +102,17 @@ public class TitleServiceImpl extends BaseServiceImpl<
 		} catch (Exception e) {
 			throw new ConflictException("Cannot update entity");
 		}
+	}
+
+	@Override
+	public void linkTitleCrew(TitleCrew titleCrew, Long titleId) throws NotFoundException {
+		Optional<Title> title = repository.findById(titleId);
+
+		if (title.isEmpty()) {
+			throw new NotFoundException("Title not found to link");
+		}
+
+		titleCrew.setTitle(title.get());
 	}
 }
 

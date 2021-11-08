@@ -51,7 +51,13 @@ public class SeasonDetailViewDTO extends SeasonSimpleViewDTO {
 	public void updateWithoutSerieInfo (Season season) {
 		super.updateFromEntity(season);
 
-		episodes = season.getEpisodes().stream().map(Episode::simpleView).collect(Collectors.toList());
+		episodes = season.getEpisodes().stream().map(t -> {
+			try {
+				return t.simpleView();
+			} catch (Exception e) {
+				return null;
+			}
+		}).collect(Collectors.toList());
 	}
 }
 

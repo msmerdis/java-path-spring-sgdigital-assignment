@@ -5,7 +5,7 @@ import java.util.Date;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import gr.sgdigital.common.transfer.BaseCreateDTO;
+import gr.sgdigital.common.transfer.AbstractCreateDTO;
 import gr.sgdigital.movies.domain.Crew;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -16,7 +16,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @EqualsAndHashCode
-public class CrewCreateDTO implements BaseCreateDTO<Crew> {
+public class CrewCreateDTO implements AbstractCreateDTO<Crew> {
 	private static final long serialVersionUID = 1L;
 
 	@NotEmpty

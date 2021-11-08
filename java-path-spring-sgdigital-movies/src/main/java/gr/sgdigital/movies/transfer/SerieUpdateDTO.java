@@ -7,7 +7,7 @@ import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import gr.sgdigital.common.transfer.BaseUpdateDTO;
+import gr.sgdigital.common.transfer.AbstractUpdateDTO;
 import gr.sgdigital.movies.domain.Serie;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -18,7 +18,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @EqualsAndHashCode(callSuper = false)
-public class SerieUpdateDTO extends BaseUpdateDTO<Serie, Long> {
+public class SerieUpdateDTO extends AbstractUpdateDTO<Serie, Long> {
 	private static final long serialVersionUID = 1L;
 
 	private Long   serieId;

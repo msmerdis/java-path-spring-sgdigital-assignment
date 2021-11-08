@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import gr.sgdigital.common.controller.BaseController;
+import gr.sgdigital.common.controller.AbstractController;
 import gr.sgdigital.movies.domain.Movie;
 import gr.sgdigital.movies.service.MovieService;
 import gr.sgdigital.movies.transfer.MovieCreateDTO;
@@ -14,7 +14,7 @@ import gr.sgdigital.movies.transfer.MovieUpdateDTO;
 
 @RestController
 @RequestMapping("/api/movie")
-public class MovieController extends BaseController<
+public class MovieController extends AbstractController<
 	Long,
 	Movie,
 	MovieCreateDTO,

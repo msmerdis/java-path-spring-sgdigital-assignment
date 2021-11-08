@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import gr.sgdigital.common.service.BaseServiceImpl;
+import gr.sgdigital.common.service.AbstractServiceImpl;
 import gr.sgdigital.common.transfer.ApiStatus;
 import gr.sgdigital.common.transfer.status.NotFoundException;
 import gr.sgdigital.movies.domain.Episode;
@@ -20,7 +20,7 @@ import gr.sgdigital.movies.transfer.SeasonSimpleViewDTO;
 import gr.sgdigital.movies.transfer.SeasonUpdateDTO;
 
 @Service
-public class SeasonServiceImpl extends BaseServiceImpl<
+public class SeasonServiceImpl extends AbstractServiceImpl<
 	Long,
 	Season,
 	SeasonCreateDTO,

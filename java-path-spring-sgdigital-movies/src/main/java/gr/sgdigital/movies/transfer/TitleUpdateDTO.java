@@ -5,7 +5,7 @@ import java.util.Set;
 
 import javax.validation.constraints.NotEmpty;
 
-import gr.sgdigital.common.transfer.BaseUpdateDTO;
+import gr.sgdigital.common.transfer.AbstractUpdateDTO;
 import gr.sgdigital.movies.domain.Title;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -16,7 +16,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @EqualsAndHashCode(callSuper = false)
-public class TitleUpdateDTO extends BaseUpdateDTO<Title, Long> {
+public class TitleUpdateDTO extends AbstractUpdateDTO<Title, Long> {
 	private static final long serialVersionUID = 1L;
 
 	private Long   titleId;

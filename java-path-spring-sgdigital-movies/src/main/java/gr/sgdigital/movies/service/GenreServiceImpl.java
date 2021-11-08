@@ -5,7 +5,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import gr.sgdigital.common.service.BaseServiceImpl;
+import gr.sgdigital.common.service.AbstractServiceImpl;
 import gr.sgdigital.movies.domain.Genre;
 import gr.sgdigital.movies.domain.Title;
 import gr.sgdigital.movies.repository.GenreRepository;
@@ -15,7 +15,7 @@ import gr.sgdigital.movies.transfer.GenreSimpleViewDTO;
 import gr.sgdigital.movies.transfer.GenreUpdateDTO;
 
 @Service
-public class GenreServiceImpl extends BaseServiceImpl<
+public class GenreServiceImpl extends AbstractServiceImpl<
 	Integer,
 	Genre,
 	GenreCreateDTO,

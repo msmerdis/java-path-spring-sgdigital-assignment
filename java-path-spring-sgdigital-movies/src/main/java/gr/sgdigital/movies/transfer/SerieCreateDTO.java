@@ -7,7 +7,7 @@ import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import gr.sgdigital.common.transfer.BaseCreateDTO;
+import gr.sgdigital.common.transfer.AbstractCreateDTO;
 import gr.sgdigital.movies.domain.Serie;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -18,7 +18,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @EqualsAndHashCode
-public class SerieCreateDTO implements BaseCreateDTO<Serie> {
+public class SerieCreateDTO implements AbstractCreateDTO<Serie> {
 	private static final long serialVersionUID = 1L;
 
 	@NotEmpty(message = "Serie must have a name.")

@@ -6,7 +6,7 @@ import java.util.Set;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
 
-import gr.sgdigital.common.transfer.BaseUpdateDTO;
+import gr.sgdigital.common.transfer.AbstractUpdateDTO;
 import gr.sgdigital.movies.domain.Movie;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -17,7 +17,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @EqualsAndHashCode(callSuper = false)
-public class MovieUpdateDTO extends BaseUpdateDTO<Movie, Long> {
+public class MovieUpdateDTO extends AbstractUpdateDTO<Movie, Long> {
 	private static final long serialVersionUID = 1L;
 
 	private Long   movieId;

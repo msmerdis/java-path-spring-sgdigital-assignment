@@ -1,5 +1,6 @@
 package gr.sgdigital.common.service;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -9,29 +10,29 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import gr.sgdigital.common.base.BaseComponent;
-import gr.sgdigital.common.domain.BaseEntity;
-import gr.sgdigital.common.repository.BaseRepository;
+import gr.sgdigital.common.domain.AbstractEntity;
+import gr.sgdigital.common.repository.AbstractRepository;
+import gr.sgdigital.common.transfer.AbstractCreateDTO;
+import gr.sgdigital.common.transfer.AbstractResponseDTO;
+import gr.sgdigital.common.transfer.AbstractUpdateDTO;
 import gr.sgdigital.common.transfer.ApiStatus;
-import gr.sgdigital.common.transfer.BaseCreateDTO;
-import gr.sgdigital.common.transfer.BaseResponseDTO;
-import gr.sgdigital.common.transfer.BaseUpdateDTO;
 import gr.sgdigital.common.transfer.status.ConflictException;
 import gr.sgdigital.common.transfer.status.NotFoundException;
 
-public class BaseServiceImpl<
+public class AbstractServiceImpl<
 	Key,
-	Entity extends BaseEntity<Key, Entity, SimpleDTO, DetailDTO>,
-	CreateDTO extends BaseCreateDTO<Entity>,
-	UpdateDTO extends BaseUpdateDTO<Entity, Key>,
-	SimpleDTO extends BaseResponseDTO<Entity>,
-	DetailDTO extends BaseResponseDTO<Entity>,
-	Repository extends BaseRepository<Key, Entity, CreateDTO, UpdateDTO, SimpleDTO, DetailDTO>
-> extends BaseComponent implements BaseService<Key, Entity, CreateDTO, UpdateDTO, SimpleDTO, DetailDTO> {
+	Entity extends AbstractEntity<Key, Entity, SimpleDTO, DetailDTO>,
+	CreateDTO extends AbstractCreateDTO<Entity>,
+	UpdateDTO extends AbstractUpdateDTO<Entity, Key>,
+	SimpleDTO extends AbstractResponseDTO<Entity>,
+	DetailDTO extends AbstractResponseDTO<Entity>,
+	Repository extends AbstractRepository<Key, Entity, CreateDTO, UpdateDTO, SimpleDTO, DetailDTO>
+> extends BaseComponent implements AbstractService<Key, Entity, CreateDTO, UpdateDTO, SimpleDTO, DetailDTO> {
 
 	final protected Repository repository;
 	final private Class<Entity> entityClass;
 
-	public BaseServiceImpl (Repository repository, Class<Entity> entityClass) {
+	public AbstractServiceImpl (Repository repository, Class<Entity> entityClass) {
 		this.repository  = repository;
 		this.entityClass = entityClass;
 	}
@@ -93,20 +94,26 @@ public class BaseServiceImpl<
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
-	public DetailDTO find(Key id) throws ApiStatus {
+	public DetailDTO find(Key id) throws ApiStatus, Exception {
 		Optional<Entity> entity = repository.findById(id);
 
 		if (entity.isEmpty()) {
 			throw new NotFoundException("Entity not found.");
 		}
 
-		return (DetailDTO) entity.get().detailView();
+		return entity.get().detailView();
 	}
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
-	public List<SimpleDTO> findAll() throws ApiStatus {
-		return repository.findAll().stream().map(e -> (SimpleDTO) e.simpleView()).collect(Collectors.toList());
+	public List<SimpleDTO> findAll() throws ApiStatus, Exception {
+		List<SimpleDTO> results = new LinkedList<SimpleDTO>();
+
+		for (Entity entity : repository.findAll()) {
+			results.add(entity.simpleView());
+		}
+
+		return results;
 	}
 }
 

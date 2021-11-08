@@ -36,15 +36,10 @@ public class CrewSanityRunner extends BaseComponent implements CommandLineRunner
 		checkCrew (id, "FirstNameToDelete", "LastNameToDelete", "MiddleNameToDelete", "1988-02-28", "Crew update did not store correct data");
 
 		// delete the crew
-		crewService.delete(id);
-
-		// verify the crew is gone
-		if (crewService.exists(id)) {
-			throw new Exception ("Crew delete did not actually delete the crew");
-		}
+		deleteCrew (id);
 	}
 
-	private long createCrew (String firstname, String lastname, String middlename, String birthDate) throws ApiStatus, Exception {
+	public long createCrew (String firstname, String lastname, String middlename, String birthDate) throws ApiStatus, Exception {
 		CrewCreateDTO crewDTO = new CrewCreateDTO();
   
 		crewDTO.setFirstName(firstname);
@@ -56,7 +51,7 @@ public class CrewSanityRunner extends BaseComponent implements CommandLineRunner
 		return view.getCrewId();
 	}
 
-	private void checkCrew (long id, String firstname, String lastname, String middlename, String birthDate, String error) throws ApiStatus, Exception {
+	public void checkCrew (long id, String firstname, String lastname, String middlename, String birthDate, String error) throws ApiStatus, Exception {
 		CrewDetailViewDTO dto = crewService.find(id);
 
 		if (!dto.getFirstName().equals(firstname)) {
@@ -84,6 +79,15 @@ public class CrewSanityRunner extends BaseComponent implements CommandLineRunner
 		crewDTO.setBirthDate(new SimpleDateFormat(Formats.DATE_FORMAT).parse(birthDate));
 
 		crewService.update(crewDTO);
+	}
+
+	public void deleteCrew (long id) throws Exception {
+		crewService.delete(id);
+
+		// verify the crew is gone
+		if (crewService.exists(id)) {
+			throw new Exception ("Crew delete did not actually delete the crew");
+		}
 	}
 }
 

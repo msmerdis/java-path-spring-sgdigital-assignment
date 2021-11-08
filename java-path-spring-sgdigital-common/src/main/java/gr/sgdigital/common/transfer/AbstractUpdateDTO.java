@@ -2,7 +2,7 @@ package gr.sgdigital.common.transfer;
 
 import javax.validation.constraints.NotNull;
 
-public abstract class BaseUpdateDTO<Entity, Key> implements BaseCreateDTO<Entity> {
+public abstract class AbstractUpdateDTO<Entity, Key> implements AbstractCreateDTO<Entity> {
 	private static final long serialVersionUID = 1L;
 
 	@NotNull(message = "Unique identifier is required for an update.")

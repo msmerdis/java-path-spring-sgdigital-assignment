@@ -6,7 +6,7 @@ import javax.validation.constraints.Positive;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import gr.sgdigital.common.transfer.BaseUpdateDTO;
+import gr.sgdigital.common.transfer.AbstractUpdateDTO;
 import gr.sgdigital.movies.domain.Episode;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -17,7 +17,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @EqualsAndHashCode(callSuper = false)
-public class EpisodeUpdateDTO extends BaseUpdateDTO<Episode, Long> {
+public class EpisodeUpdateDTO extends AbstractUpdateDTO<Episode, Long> {
 	private static final long serialVersionUID = 1L;
 
 	@Positive (message = "Episode order must be a positive number")

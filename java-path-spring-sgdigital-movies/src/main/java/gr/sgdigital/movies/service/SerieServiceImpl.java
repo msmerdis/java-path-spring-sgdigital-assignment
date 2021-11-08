@@ -8,17 +8,13 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import gr.sgdigital.common.service.BaseServiceImpl;
+import gr.sgdigital.common.service.AbstractServiceImpl;
 import gr.sgdigital.common.transfer.ApiStatus;
 import gr.sgdigital.common.transfer.status.ConflictException;
 import gr.sgdigital.common.transfer.status.NotFoundException;
 import gr.sgdigital.movies.domain.Season;
 import gr.sgdigital.movies.domain.Serie;
-import gr.sgdigital.movies.domain.Serie;
 import gr.sgdigital.movies.repository.SerieRepository;
-import gr.sgdigital.movies.transfer.SerieCreateDTO;
-import gr.sgdigital.movies.transfer.SerieDetailViewDTO;
-import gr.sgdigital.movies.transfer.SerieUpdateDTO;
 import gr.sgdigital.movies.transfer.SerieCreateDTO;
 import gr.sgdigital.movies.transfer.SerieDetailViewDTO;
 import gr.sgdigital.movies.transfer.SerieSimpleViewDTO;
@@ -27,7 +23,7 @@ import gr.sgdigital.movies.transfer.TitleCreateDTO;
 import gr.sgdigital.movies.transfer.TitleUpdateDTO;
 
 @Service
-public class SerieServiceImpl extends BaseServiceImpl<
+public class SerieServiceImpl extends AbstractServiceImpl<
 	Long,
 	Serie,
 	SerieCreateDTO,

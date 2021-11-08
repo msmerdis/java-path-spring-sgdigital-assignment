@@ -24,6 +24,7 @@ import gr.sgdigital.movies.service.GenreService;
 import gr.sgdigital.movies.service.MovieService;
 import gr.sgdigital.movies.service.SeasonService;
 import gr.sgdigital.movies.service.SerieService;
+import gr.sgdigital.movies.service.TitleCrewService;
 import gr.sgdigital.movies.transfer.CrewCreateDTO;
 import gr.sgdigital.movies.transfer.CrewDetailViewDTO;
 import gr.sgdigital.movies.transfer.CrewRoleCreateDTO;
@@ -32,10 +33,12 @@ import gr.sgdigital.movies.transfer.EpisodeCreateDTO;
 import gr.sgdigital.movies.transfer.GenreCreateDTO;
 import gr.sgdigital.movies.transfer.GenreDetailViewDTO;
 import gr.sgdigital.movies.transfer.MovieCreateDTO;
+import gr.sgdigital.movies.transfer.MovieDetailViewDTO;
 import gr.sgdigital.movies.transfer.SeasonCreateDTO;
 import gr.sgdigital.movies.transfer.SeasonDetailViewDTO;
 import gr.sgdigital.movies.transfer.SerieCreateDTO;
 import gr.sgdigital.movies.transfer.SerieDetailViewDTO;
+import gr.sgdigital.movies.transfer.TitleCrewCreateDTO;
 
 @Component
 @Profile("test-data")
@@ -48,11 +51,14 @@ public class GenerateContentRunner extends BaseComponent implements CommandLineR
 	@Autowired private EpisodeService episodeService;
 	@Autowired private CrewService crewService;
 	@Autowired private CrewRoleService crewRoleService;
+	@Autowired private TitleCrewService titleCrewService;
 
 	Random random = new Random(System.currentTimeMillis());
 
 	static private List<String> genres    = new LinkedList<String> ();
 	static private List<String> crewRoles = new LinkedList<String> ();
+	static private List<Long>   titles    = new LinkedList<Long> ();
+	static private List<Long>   cast      = new LinkedList<Long> ();
 
 	static {
 		Collections.addAll (
@@ -86,6 +92,7 @@ public class GenerateContentRunner extends BaseComponent implements CommandLineR
 		generateSeries (10, 1, 10, 10, 24);
 		generateCrewRoles ();
 		generateCrew (100);
+		assignCrewToTitles (5, 55);
 	}
 
 	@Transactional
@@ -117,7 +124,10 @@ public class GenerateContentRunner extends BaseComponent implements CommandLineR
 		movieDTO.setGenres(generateRandomListOfGenres());
 		movieDTO.setReleasedYear(releasedYear);
 
-		movieService.create(movieDTO);
+		MovieDetailViewDTO dto = movieService.create(movieDTO);
+
+		// store title id for later
+		titles.add(dto.getTitleId());
 	}
 
 	private void generateSeries (int numSeries, int minSeasons, int maxSeasons, int minEpisodes, int maxEpisodes) throws ApiStatus, Exception {
@@ -144,6 +154,9 @@ public class GenerateContentRunner extends BaseComponent implements CommandLineR
 		for (int i = 1; i <= numSeasons; i += 1) {
 			generateSeason (dto.getSerieId(), i, "Season name " + i, "Season Description " + i, releasedYear, numEpisodes);
 		}
+
+		// store title id for later
+		titles.add(dto.getTitleId());
 	}
 
 	private void generateSeason (long serieId, int order, String name, String description, int releasedYear, int numEpisodes) throws ApiStatus, Exception {
@@ -208,13 +221,36 @@ public class GenerateContentRunner extends BaseComponent implements CommandLineR
 
 	private void generateCrew(String firstname, String lastname, String middlename, String birthDate) throws ApiStatus, Exception {
 		CrewCreateDTO crewDTO = new CrewCreateDTO();
-  
+
 		crewDTO.setFirstName(firstname);
 		crewDTO.setLastName(lastname);
 		crewDTO.setMiddleName(middlename);
 		crewDTO.setBirthDate(new SimpleDateFormat(Formats.DATE_FORMAT).parse(birthDate));
 
 		CrewDetailViewDTO view = crewService.create(crewDTO);
+
+		cast.add(view.getCrewId());
+	}
+
+	private void assignCrewToTitles (int minCrew, int maxCrew) throws ApiStatus, Exception {
+		for (Long titleId : titles) {
+			assignCrewToTitle (titleId, minCrew + random.nextInt(maxCrew - minCrew + 1));
+		}
+	}
+
+	private void assignCrewToTitle (long titleId, int numCrew) throws ApiStatus, Exception {
+		// shuffle cast so we can have random cast, but no dublicates
+		Collections.shuffle(genres, random);
+
+		for (int i = 0; i < numCrew; i += 1) {
+			TitleCrewCreateDTO dto = new TitleCrewCreateDTO();
+
+			dto.setTitleId(titleId);
+			dto.setCrewId(cast.get(i));
+			dto.setRole(crewRoles.get(random.nextInt(crewRoles.size())));
+
+			titleCrewService.create(dto);
+		}
 	}
 }
 

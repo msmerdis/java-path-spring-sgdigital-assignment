@@ -15,40 +15,40 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import gr.sgdigital.common.base.BaseComponent;
-import gr.sgdigital.common.domain.BaseEntity;
-import gr.sgdigital.common.service.BaseService;
+import gr.sgdigital.common.domain.AbstractEntity;
+import gr.sgdigital.common.service.AbstractService;
+import gr.sgdigital.common.transfer.AbstractCreateDTO;
+import gr.sgdigital.common.transfer.AbstractResponseDTO;
+import gr.sgdigital.common.transfer.AbstractUpdateDTO;
 import gr.sgdigital.common.transfer.ApiResponse;
 import gr.sgdigital.common.transfer.ApiStatus;
-import gr.sgdigital.common.transfer.BaseCreateDTO;
-import gr.sgdigital.common.transfer.BaseResponseDTO;
-import gr.sgdigital.common.transfer.BaseUpdateDTO;
 
-public abstract class BaseController<
+public abstract class AbstractController<
 	Key,
-	Entity extends BaseEntity<Key, Entity, SimpleDTO, DetailDTO>,
-	CreateDTO extends BaseCreateDTO<Entity>,
-	UpdateDTO extends BaseUpdateDTO<Entity, Key>,
-	SimpleDTO extends BaseResponseDTO<Entity>,
-	DetailDTO extends BaseResponseDTO<Entity>,
-	Service extends BaseService<Key, Entity, CreateDTO, UpdateDTO, SimpleDTO, DetailDTO>
+	Entity extends AbstractEntity<Key, Entity, SimpleDTO, DetailDTO>,
+	CreateDTO extends AbstractCreateDTO<Entity>,
+	UpdateDTO extends AbstractUpdateDTO<Entity, Key>,
+	SimpleDTO extends AbstractResponseDTO<Entity>,
+	DetailDTO extends AbstractResponseDTO<Entity>,
+	Service extends AbstractService<Key, Entity, CreateDTO, UpdateDTO, SimpleDTO, DetailDTO>
 > extends BaseComponent {
 
 	final protected Service service;
 
 	@Autowired
-	public BaseController (Service service) {
+	public AbstractController (Service service) {
 		this.service = service;
 	}
 
 	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public ApiResponse<DetailDTO> get(@PathVariable("id") final Key id) throws ApiStatus {
+	public ApiResponse<DetailDTO> get(@PathVariable("id") final Key id) throws Exception {
 		return new ApiResponse<DetailDTO> (service.find(id));
 	}
 
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public ApiResponse<List<SimpleDTO>> findAll() throws ApiStatus {
+	public ApiResponse<List<SimpleDTO>> findAll() throws Exception {
 		return new ApiResponse<List<SimpleDTO>> (service.findAll());
 	}
 

@@ -1,8 +1,11 @@
 package gr.sgdigital.movies.domain;
 
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,6 +15,7 @@ import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -47,6 +51,10 @@ public class Title extends BaseEntity <Long, Title, TitleSimpleViewDTO, TitleDet
 	)
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<Genre> genres = new HashSet<Genre> ();
+
+	@Fetch(FetchMode.SELECT)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "title")
+	private List<TitleCrew> titleCrew = new LinkedList<TitleCrew>();
 
 	@Enumerated(EnumType.ORDINAL)
 	private TitleType type;

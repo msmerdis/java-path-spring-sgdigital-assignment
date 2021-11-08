@@ -13,14 +13,14 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode
 @Embeddable
-class TitleCrewKey implements Serializable {
+public class TitleCrewKey implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Column(name = "titleId")
-    Long titleId;
+    private long titleId;
 
 	@Column(name = "crewId")
-    Long crewId;
+    private long crewId;
 }
 
 
