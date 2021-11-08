@@ -63,3 +63,5 @@ spring:
       # .sql) and DML (data.sql) scripts.
       mode: never
       platform: h2
+server:
+  port: 8080

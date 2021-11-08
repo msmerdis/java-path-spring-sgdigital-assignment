@@ -49,6 +49,7 @@
 
 		<!-- Library versions-->
 		<disruptor-maven-plugin.version>3.4.4</disruptor-maven-plugin.version>
+		<springfox-swagger2.version>2.9.2</springfox-swagger2.version>
 	</properties>
 
 	<dependencyManagement>
@@ -76,6 +77,18 @@
 				<groupId>gr.sgdigital</groupId>
 				<artifactId>java-path-spring-sgdigital-movies</artifactId>
 				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-swagger2</artifactId>
+				<version>${springfox-swagger2.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-swagger-ui</artifactId>
+				<version>${springfox-swagger2.version}</version>
 			</dependency>
 
 		</dependencies>
