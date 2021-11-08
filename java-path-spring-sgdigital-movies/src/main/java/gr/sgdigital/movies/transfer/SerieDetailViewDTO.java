@@ -26,7 +26,7 @@ public class SerieDetailViewDTO extends SerieSimpleViewDTO {
 	public void updateFromEntity(Serie serie) {
 		super.updateFromEntity(serie);
 
-		seasons = serie.getSeasons().stream().map(Season::detailView).collect(Collectors.toList());
+		seasons = serie.getSeasons().stream().map(Season::seriesView).collect(Collectors.toList());
 	}
 }
 

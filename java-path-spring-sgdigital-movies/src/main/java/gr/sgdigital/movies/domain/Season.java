@@ -66,6 +66,17 @@ public class Season extends BaseEntity <Long, Season, SeasonSimpleViewDTO, Seaso
 	public Season () {
 		super(SeasonSimpleViewDTO.class, SeasonDetailViewDTO.class);
 	}
+
+	// provide a custom detailed view that does not include series
+	// this is to be used by SerieDetailViewDTO to avoid
+	// adding reduntant information to the reponse
+	public SeasonDetailViewDTO seriesView () {
+		SeasonDetailViewDTO dto = new SeasonDetailViewDTO ();
+
+		dto.updateWithoutSerieInfo(this);
+
+		return dto;
+	}
 }
 
 

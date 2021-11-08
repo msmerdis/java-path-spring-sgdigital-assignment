@@ -140,7 +140,6 @@ public class SeasonControllerTest extends BaseTestController {
 		season.setSeasonId(id);
 		season.setSeasonName(name);
 		season.setSeasonDesc(desc);
-		season.setSerieGenre(Arrays.stream(genres).collect(Collectors.toSet()));
 
 		return season;
 	}

@@ -132,7 +132,7 @@ public class GenerateContentRunner extends BaseComponent implements CommandLineR
 		seasonDTO.setSeasonOrder(order);
 		seasonDTO.setSeasonName(name);
 		seasonDTO.setSeasonDesc(description);
-		seasonDTO.setReleasedYear(releasedYear);
+		seasonDTO.setReleasedYear(releasedYear + order - 1);
 
 		SeasonDetailViewDTO dto = seasonService.create(seasonDTO);
 

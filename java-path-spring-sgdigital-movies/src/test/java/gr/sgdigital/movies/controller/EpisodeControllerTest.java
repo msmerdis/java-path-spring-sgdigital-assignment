@@ -142,7 +142,6 @@ public class EpisodeControllerTest extends BaseTestController {
 		episode.setEpisodeName(name);
 		episode.setEpisodeDesc(desc);
 		episode.setDuration(2400 + order);
-		episode.setSerieGenre(Arrays.stream(genres).collect(Collectors.toSet()));
 
 		return episode;
 	}
