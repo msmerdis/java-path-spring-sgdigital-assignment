@@ -35,7 +35,7 @@ public class Serie extends BaseEntity <Long, Serie, SerieSimpleViewDTO, SerieDet
 	@Column
 	private Boolean ongoing;
 
-	@OneToOne(fetch = FetchType.EAGER)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "titleId", referencedColumnName = "Id")
 	private Title title;
 

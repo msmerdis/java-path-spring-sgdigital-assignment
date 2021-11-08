@@ -55,7 +55,7 @@ public class Season extends BaseEntity <Long, Season, SeasonSimpleViewDTO, Seaso
 
 	@JsonIgnore
 	@Fetch(FetchMode.SELECT)
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "season")
 	private Set<Episode> episodes = new HashSet<Episode> ();
 
 	@JsonIgnore

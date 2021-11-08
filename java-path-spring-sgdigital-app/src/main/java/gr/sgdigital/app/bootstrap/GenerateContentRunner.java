@@ -20,6 +20,7 @@ import gr.sgdigital.movies.service.GenreService;
 import gr.sgdigital.movies.service.MovieService;
 import gr.sgdigital.movies.service.SeasonService;
 import gr.sgdigital.movies.service.SerieService;
+import gr.sgdigital.movies.transfer.EpisodeCreateDTO;
 import gr.sgdigital.movies.transfer.GenreCreateDTO;
 import gr.sgdigital.movies.transfer.GenreDetailViewDTO;
 import gr.sgdigital.movies.transfer.MovieCreateDTO;
@@ -119,7 +120,7 @@ public class GenerateContentRunner extends BaseComponent implements CommandLineR
 
 		SerieDetailViewDTO dto = serieService.create(serieDTO);
 
-		for (int i = 1; i < numSeasons; i += 1) {
+		for (int i = 1; i <= numSeasons; i += 1) {
 			generateSeason (dto.getSerieId(), i, "Season name " + i, "Season Description " + i, releasedYear, numEpisodes);
 		}
 	}
@@ -135,13 +136,21 @@ public class GenerateContentRunner extends BaseComponent implements CommandLineR
 
 		SeasonDetailViewDTO dto = seasonService.create(seasonDTO);
 
-		for (int i = 1; i < numEpisodes; i += 1) {
+		for (int i = 1; i <= numEpisodes; i += 1) {
 			generateEpisode (dto.getSeasonId(), i, "Episode name " + i, "Episode Description " + i);
 		}
 	}
 
-	private void generateEpisode (long seasonId, int order, String name, String description) {
-		
+	private void generateEpisode (long seasonId, int order, String name, String description) throws ApiStatus, Exception {
+		EpisodeCreateDTO episodeDTO = new EpisodeCreateDTO();
+
+		episodeDTO.setSeasonId(seasonId);
+		episodeDTO.setEpisodeOrder(order);
+		episodeDTO.setEpisodeName(name);
+		episodeDTO.setEpisodeDesc(description);
+		episodeDTO.setDuration(20 * 60 + random.nextInt(40 * 60));
+
+		episodeService.create(episodeDTO);
 	}
 
 	private Set<String> generateRandomListOfGenres() {

@@ -45,14 +45,14 @@ public class Episode extends BaseEntity <Long, Episode, EpisodeSimpleViewDTO, Ep
 	@Column
 	private int duration;
 
-	public Episode() {
-		super(EpisodeSimpleViewDTO.class, EpisodeDetailViewDTO.class);
-	}
-
 	@JsonIgnore
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "seasonId", referencedColumnName = "Id")
 	private Season season;
+
+	public Episode() {
+		super(EpisodeSimpleViewDTO.class, EpisodeDetailViewDTO.class);
+	}
 }
 
 

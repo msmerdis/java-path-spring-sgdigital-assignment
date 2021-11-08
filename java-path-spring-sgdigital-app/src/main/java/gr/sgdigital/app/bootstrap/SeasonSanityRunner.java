@@ -19,74 +19,88 @@ public class SeasonSanityRunner extends BaseComponent implements CommandLineRunn
 	@Autowired private SerieSanityRunner serieSanityRunner;
 	@Autowired private SeasonService seasonService;
 
+	public class SeasonKey {
+		public Long serieId;
+		public Long seasonId;
+
+		public SeasonKey (Long serieId, Long seasonId) {
+			this.serieId  = serieId;
+			this.seasonId = seasonId;
+		}
+	}
+
 	@Override
 	public void run(String... args) throws Exception {
-		// create a serie to create season to
-		long serieId = serieSanityRunner.createSerie("ToCreateSeasons", "ToUpdateDesc", true, "Action", "Comedy");
-
 		// create a dummy season
-		long id = createSeason (serieId, "ToUpdate", "ToUpdatDesc", 1, 1987);
+		SeasonKey id = createSeason ("ToUpdate", "ToUpdatDesc", 1, 1987);
 
 		// verify the correct name is stored
-		checkSeason (id, "ToUpdate", "ToUpdatDesc", 1, 1987, serieId, "Season create did not store the correct info");
+		checkSeason (id, "ToUpdate", "ToUpdatDesc", 1, 1987, "Season create did not store the correct info");
 
 		// update the season
 		updateSeason (id, "ToDelete", "ToDeleteDesc", 2, 2012);
 
 		// verify the correct name is stored
-		checkSeason (id, "ToDelete", "ToDeleteDesc", 2, 2012, serieId, "Season create did not store the correct info");
+		checkSeason (id, "ToDelete", "ToDeleteDesc", 2, 2012, "Season create did not store the correct info");
 
 		// delete the season
-		seasonService.delete(id);
+		deleteSeason(id);
+	}
+
+	public void deleteSeason (SeasonKey id) throws Exception {
+		seasonService.delete(id.seasonId);
 
 		// verify the season is gone
-		if (seasonService.exists(id)) {
+		if (seasonService.exists(id.seasonId)) {
 			throw new Exception ("Season delete did not actually delete the season");
 		}
 
 		// test that serie is still here and then delete it as well
-		serieSanityRunner.checkSerie (serieId, "Season deletion deleted serie as well", "ToCreateSeasons", "ToUpdateDesc", true, "Action", "Comedy");
-		serieSanityRunner.deleteSerie(serieId);
+		serieSanityRunner.checkSerie (id.serieId, "Season deletion deleted serie as well", "ToCreateSeasons", "ToUpdateDesc", true, "Action", "Comedy");
+		serieSanityRunner.deleteSerie(id.serieId);
 	}
 
-	private long createSeason (long seriesId, String season, String descr, int order, int year) throws ApiStatus, Exception {
+	public SeasonKey createSeason (String season, String descr, int order, int year) throws ApiStatus, Exception {
+		// create a serie to create season to
+		long serieId = serieSanityRunner.createSerie("ToCreateSeasons", "ToUpdateDesc", true, "Action", "Comedy");
+
 		SeasonCreateDTO seasonDTO = new SeasonCreateDTO();
-		seasonDTO.setSeriesId(seriesId);
+		seasonDTO.setSeriesId(serieId);
 		seasonDTO.setSeasonName(season);
 		seasonDTO.setSeasonDesc(descr);
 		seasonDTO.setSeasonOrder(order);
 		seasonDTO.setReleasedYear(year);
 		SeasonDetailViewDTO view = seasonService.create(seasonDTO);
 
-		return view.getSeasonId();
+		return new SeasonKey (serieId, view.getSeasonId());
 	}
 
-	private void checkSeason (long id, String season, String descr, int order, int year, long serieId, String error) throws ApiStatus, Exception {
-		SeasonDetailViewDTO theSeason = seasonService.find(id);
+	public void checkSeason (SeasonKey id, String season, String descr, int order, int year, String error) throws ApiStatus, Exception {
+		SeasonDetailViewDTO theSeason = seasonService.find(id.seasonId);
 
-		if (theSeason.getSeasonId().longValue() != id) {
-			throw new Exception (error + "(1)");
+		if (theSeason.getSeasonId().longValue() != id.seasonId) {
+			throw new Exception (error);
 		}
 		if (!theSeason.getSeasonName().equals(season)) {
-			throw new Exception (error + "(2) " + theSeason.getSeasonName() + " vs " + season);
+			throw new Exception (error);
 		}
 		if (!theSeason.getSeasonDesc().equals(descr)) {
-			throw new Exception (error + "(3)");
+			throw new Exception (error);
 		}
 		if (theSeason.getReleased() != year) {
-			throw new Exception (error + "(4)");
+			throw new Exception (error);
 		}
 		if (theSeason.getReleased() != year) {
-			throw new Exception (error + "(5)");
+			throw new Exception (error);
 		}
-		if (theSeason.getSerieId() != serieId) {
-			throw new Exception (error + "(6)");
+		if (theSeason.getSerieId().compareTo(id.serieId) != 0) {
+			throw new Exception (error);
 		}
 	}
 
-	private void updateSeason (long id, String season, String descr, int order, int year) throws ApiStatus, Exception {
+	private void updateSeason (SeasonKey id, String season, String descr, int order, int year) throws ApiStatus, Exception {
 		SeasonUpdateDTO seasonDTO = new SeasonUpdateDTO();
-		seasonDTO.setId(id);
+		seasonDTO.setId(id.seasonId);
 		seasonDTO.setSeasonName(season);
 		seasonDTO.setSeasonDesc(descr);
 		seasonDTO.setSeasonOrder(order);

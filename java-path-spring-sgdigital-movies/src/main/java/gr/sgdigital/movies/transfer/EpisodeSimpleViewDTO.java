@@ -1,6 +1,7 @@
 package gr.sgdigital.movies.transfer;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import gr.sgdigital.common.transfer.BaseResponseDTO;
 import gr.sgdigital.movies.domain.Episode;
@@ -35,7 +36,8 @@ public class EpisodeSimpleViewDTO extends BaseResponseDTO<Episode> {
 	private String serieName;
 	private String serieDesc;
 
-	private Set<Genre> serieGenre;
+	private Set<String> serieGenre;
+	private Boolean ongoing;
 
 	@Override
 	public void updateFromEntity(Episode episode) {
@@ -58,7 +60,8 @@ public class EpisodeSimpleViewDTO extends BaseResponseDTO<Episode> {
 		serieId    = serie.getId();
 		serieName  = title.getTitle();
 		serieDesc  = title.getDescription();
-		serieGenre = title.getGenres();
+		serieGenre = title.getGenres().stream().map(Genre::getName).collect(Collectors.toSet());
+		ongoing    = serie.getOngoing();
 	}
 }
 

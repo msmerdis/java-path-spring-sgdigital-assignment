@@ -1,5 +1,7 @@
 package gr.sgdigital.movies.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -8,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import gr.sgdigital.common.service.BaseServiceImpl;
 import gr.sgdigital.common.transfer.ApiStatus;
+import gr.sgdigital.common.transfer.status.NotFoundException;
+import gr.sgdigital.movies.domain.Episode;
 import gr.sgdigital.movies.domain.Season;
 import gr.sgdigital.movies.repository.SeasonRepository;
 import gr.sgdigital.movies.transfer.SeasonCreateDTO;
@@ -47,6 +51,17 @@ public class SeasonServiceImpl extends BaseServiceImpl<
 		serieService.updateSeasonWithSerie(season, dto.getSeriesId());
 
 		return repository.saveAndFlush(season).detailView();
+	}
+
+	@Override
+	public void updateSeasonWithSerie(Episode episode, long seasonId) throws NotFoundException {
+		Optional<Season> season = repository.findById(seasonId);
+
+		if (season.isEmpty()) {
+			throw new NotFoundException("Season not found.");
+		}
+
+		episode.setSeason(season.get());
 	}
 
 }

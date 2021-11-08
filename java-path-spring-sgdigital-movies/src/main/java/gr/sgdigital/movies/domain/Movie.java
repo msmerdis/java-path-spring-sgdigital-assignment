@@ -1,5 +1,6 @@
 package gr.sgdigital.movies.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -24,7 +25,7 @@ public class Movie extends BaseEntity <Long, Movie, MovieSimpleViewDTO, MovieDet
 	@Column
 	private int releasedYear;
 
-	@OneToOne(fetch = FetchType.EAGER)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "titleId", referencedColumnName = "Id")
 	private Title title;
 

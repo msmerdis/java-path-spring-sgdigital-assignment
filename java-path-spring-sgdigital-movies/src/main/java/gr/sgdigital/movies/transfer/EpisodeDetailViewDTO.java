@@ -8,7 +8,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 public class EpisodeDetailViewDTO extends EpisodeSimpleViewDTO {
 	private static final long serialVersionUID = 1L;
 }

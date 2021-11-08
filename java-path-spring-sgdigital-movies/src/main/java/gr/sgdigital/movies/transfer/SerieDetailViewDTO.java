@@ -1,6 +1,6 @@
 package gr.sgdigital.movies.transfer;
 
-import java.util.Set;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,18 +15,18 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 public class SerieDetailViewDTO extends SerieSimpleViewDTO {
 	private static final long serialVersionUID = 1L;
 
 	@JsonProperty
-	private Set<SeasonDetailViewDTO> seasons;
+	private List<SeasonDetailViewDTO> seasons;
 
 	@Override
 	public void updateFromEntity(Serie serie) {
 		super.updateFromEntity(serie);
 
-		seasons = serie.getSeasons().stream().map(Season::detailView).collect(Collectors.toSet());
+		seasons = serie.getSeasons().stream().map(Season::detailView).collect(Collectors.toList());
 	}
 }
 
