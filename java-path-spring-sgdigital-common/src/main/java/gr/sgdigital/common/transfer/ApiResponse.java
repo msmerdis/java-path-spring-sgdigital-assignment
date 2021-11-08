@@ -2,6 +2,7 @@ package gr.sgdigital.common.transfer;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -22,6 +23,9 @@ public class ApiResponse<E> implements Serializable {
 	@JsonInclude(Include.ALWAYS)
 	final public ApiStatus status;
 
+	@JsonInclude(Include.NON_NULL)
+	public List<String> info;
+
 	public ApiResponse (ApiStatus status) {
 		this (status, null);
 	}
@@ -40,6 +44,14 @@ public class ApiResponse<E> implements Serializable {
 		this.status    = status;
 		this.data      = data;
 		this.timestamp = timestamp;
+	}
+
+	public List<String> getInfo() {
+		return info;
+	}
+
+	public void setInfo(List<String> info) {
+		this.info = info;
 	}
 }
 
