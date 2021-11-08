@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import gr.sgdigital.common.base.BaseComponent;
 import gr.sgdigital.common.transfer.ApiStatus;
 import gr.sgdigital.movies.base.Formats;
+import gr.sgdigital.movies.service.CrewRoleService;
 import gr.sgdigital.movies.service.CrewService;
 import gr.sgdigital.movies.service.EpisodeService;
 import gr.sgdigital.movies.service.GenreService;
@@ -25,6 +26,8 @@ import gr.sgdigital.movies.service.SeasonService;
 import gr.sgdigital.movies.service.SerieService;
 import gr.sgdigital.movies.transfer.CrewCreateDTO;
 import gr.sgdigital.movies.transfer.CrewDetailViewDTO;
+import gr.sgdigital.movies.transfer.CrewRoleCreateDTO;
+import gr.sgdigital.movies.transfer.CrewRoleDetailViewDTO;
 import gr.sgdigital.movies.transfer.EpisodeCreateDTO;
 import gr.sgdigital.movies.transfer.GenreCreateDTO;
 import gr.sgdigital.movies.transfer.GenreDetailViewDTO;
@@ -44,10 +47,12 @@ public class GenerateContentRunner extends BaseComponent implements CommandLineR
 	@Autowired private SeasonService seasonService;
 	@Autowired private EpisodeService episodeService;
 	@Autowired private CrewService crewService;
+	@Autowired private CrewRoleService crewRoleService;
 
 	Random random = new Random(System.currentTimeMillis());
 
-	static private List<String> genres = new LinkedList<String> ();
+	static private List<String> genres    = new LinkedList<String> ();
+	static private List<String> crewRoles = new LinkedList<String> ();
 
 	static {
 		Collections.addAll (
@@ -64,6 +69,14 @@ public class GenerateContentRunner extends BaseComponent implements CommandLineR
 			"Mystery",
 			"Sci-Fi"
 		);
+
+		Collections.addAll (
+			crewRoles,
+			"Director",
+			"Producer",
+			"Writer",
+			"Star"
+		);
 	}
 
 	@Override
@@ -71,6 +84,7 @@ public class GenerateContentRunner extends BaseComponent implements CommandLineR
 		generateGenres ();
 		generateMovies (10);
 		generateSeries (10, 1, 10, 10, 24);
+		generateCrewRoles ();
 		generateCrew (100);
 	}
 
@@ -171,6 +185,19 @@ public class GenerateContentRunner extends BaseComponent implements CommandLineR
 		}
 
 		return genreList;
+	}
+
+	private void generateCrewRoles () throws ApiStatus, Exception {
+		for (String crewRole : crewRoles) {
+			createCrewRole (crewRole);
+		}
+	}
+
+	private int createCrewRole (String crewRole) throws ApiStatus, Exception {
+		CrewRoleCreateDTO crewRoleDTO = new CrewRoleCreateDTO();
+		crewRoleDTO.setName(crewRole);
+		CrewRoleDetailViewDTO view = crewRoleService.create(crewRoleDTO);
+		return view.getCrewRoleId();
 	}
 
 	private void generateCrew (int numCrew) throws ApiStatus, Exception {
