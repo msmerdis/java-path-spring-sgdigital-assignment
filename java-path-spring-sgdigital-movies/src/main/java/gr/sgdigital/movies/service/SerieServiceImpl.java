@@ -12,6 +12,7 @@ import gr.sgdigital.common.service.BaseServiceImpl;
 import gr.sgdigital.common.transfer.ApiStatus;
 import gr.sgdigital.common.transfer.status.ConflictException;
 import gr.sgdigital.common.transfer.status.NotFoundException;
+import gr.sgdigital.movies.domain.Season;
 import gr.sgdigital.movies.domain.Serie;
 import gr.sgdigital.movies.domain.Serie;
 import gr.sgdigital.movies.repository.SerieRepository;
@@ -100,6 +101,17 @@ public class SerieServiceImpl extends BaseServiceImpl<
 		title.setGenres(dto.getGenres());
 
 		return title;
+	}
+
+	@Override
+	public void updateSeasonWithSerie(Season season, long seriesId) throws NotFoundException {
+		Optional<Serie> serie = repository.findById(seriesId);
+
+		if (serie.isEmpty()) {
+			throw new NotFoundException("Serie not found.");
+		}
+
+		season.setSerie(serie.get());
 	}
 }
 

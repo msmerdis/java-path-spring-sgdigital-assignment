@@ -43,6 +43,10 @@ public class SerieSanityRunner extends BaseComponent implements CommandLineRunne
 		checkSerie (id, "Serie update did not store the correct value", "ToDelete", "ToDeleteDesc", false, "Comedy", "Horror");
 
 		// delete the serie
+		deleteSerie (id);
+	}
+
+	public void deleteSerie (long id) throws Exception {
 		serieService.delete(id);
 
 		// verify the serie is gone
@@ -51,7 +55,7 @@ public class SerieSanityRunner extends BaseComponent implements CommandLineRunne
 		}
 	}
 
-	private long createSerie (String serie, String descr, boolean ongoing, String... genres) throws ApiStatus, Exception {
+	public long createSerie (String serie, String descr, boolean ongoing, String... genres) throws ApiStatus, Exception {
 		SerieCreateDTO serieDTO = new SerieCreateDTO();
 		serieDTO.setSerieName(serie);
 		serieDTO.setSerieDesc(descr);
@@ -61,7 +65,7 @@ public class SerieSanityRunner extends BaseComponent implements CommandLineRunne
 		return view.getSerieId();
 	}
 
-	private void checkSerie (long id, String error, String serie, String descr, boolean ongoing, String... genres) throws ApiStatus, Exception {
+	public void checkSerie (long id, String error, String serie, String descr, boolean ongoing, String... genres) throws ApiStatus, Exception {
 		SerieDetailViewDTO theSerie = serieService.find(id);
 		Set<String> genreSet = Arrays.stream(genres).collect(Collectors.toSet());
 

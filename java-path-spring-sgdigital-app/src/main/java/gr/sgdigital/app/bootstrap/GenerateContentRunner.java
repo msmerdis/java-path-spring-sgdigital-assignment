@@ -15,9 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import gr.sgdigital.common.base.BaseComponent;
 import gr.sgdigital.common.transfer.ApiStatus;
-import gr.sgdigital.movies.domain.Season;
-import gr.sgdigital.movies.domain.Serie;
-import gr.sgdigital.movies.domain.TitleType;
 import gr.sgdigital.movies.service.EpisodeService;
 import gr.sgdigital.movies.service.GenreService;
 import gr.sgdigital.movies.service.MovieService;
@@ -26,7 +23,10 @@ import gr.sgdigital.movies.service.SerieService;
 import gr.sgdigital.movies.transfer.GenreCreateDTO;
 import gr.sgdigital.movies.transfer.GenreDetailViewDTO;
 import gr.sgdigital.movies.transfer.MovieCreateDTO;
+import gr.sgdigital.movies.transfer.SeasonCreateDTO;
+import gr.sgdigital.movies.transfer.SeasonDetailViewDTO;
 import gr.sgdigital.movies.transfer.SerieCreateDTO;
+import gr.sgdigital.movies.transfer.SerieDetailViewDTO;
 
 @Component
 @Profile("test-data")
@@ -117,7 +117,31 @@ public class GenerateContentRunner extends BaseComponent implements CommandLineR
 		serieDTO.setGenres(generateRandomListOfGenres());
 		serieDTO.setOngoing(releasedYear % 2 == 0);
 
-		serieService.create(serieDTO);
+		SerieDetailViewDTO dto = serieService.create(serieDTO);
+
+		for (int i = 1; i < numSeasons; i += 1) {
+			generateSeason (dto.getSerieId(), i, "Season name " + i, "Season Description " + i, releasedYear, numEpisodes);
+		}
+	}
+
+	private void generateSeason (long serieId, int order, String name, String description, int releasedYear, int numEpisodes) throws ApiStatus, Exception {
+		SeasonCreateDTO seasonDTO = new SeasonCreateDTO();
+
+		seasonDTO.setSeriesId(serieId);
+		seasonDTO.setSeasonOrder(order);
+		seasonDTO.setSeasonName(name);
+		seasonDTO.setSeasonDesc(description);
+		seasonDTO.setReleasedYear(releasedYear);
+
+		SeasonDetailViewDTO dto = seasonService.create(seasonDTO);
+
+		for (int i = 1; i < numEpisodes; i += 1) {
+			generateEpisode (dto.getSeasonId(), i, "Episode name " + i, "Episode Description " + i);
+		}
+	}
+
+	private void generateEpisode (long seasonId, int order, String name, String description) {
+		
 	}
 
 	private Set<String> generateRandomListOfGenres() {

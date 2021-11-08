@@ -41,7 +41,7 @@ public class Serie extends BaseEntity <Long, Serie, SerieSimpleViewDTO, SerieDet
 
 	@JsonIgnore
 	@Fetch(FetchMode.SELECT)
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "serie")
 	private Set<Season> seasons = new HashSet<Season> ();
 
 	public Serie () {
