@@ -33,7 +33,7 @@ import lombok.Setter;
 public class Serie extends BaseEntity <Long, Serie, SerieSimpleViewDTO, SerieDetailViewDTO> {
 
 	@Column
-	private boolean ongoing;
+	private Boolean ongoing;
 
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "titleId", referencedColumnName = "Id")

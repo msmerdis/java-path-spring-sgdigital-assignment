@@ -5,6 +5,8 @@ import java.util.Set;
 
 import javax.validation.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import gr.sgdigital.common.transfer.BaseCreateDTO;
 import gr.sgdigital.movies.domain.Serie;
 import lombok.EqualsAndHashCode;
@@ -27,12 +29,12 @@ public class SerieCreateDTO implements BaseCreateDTO<Serie> {
 
 	private Set<String> genres = new HashSet<String>();
 
-	private boolean ongoing;
+	@JsonProperty
+	private Boolean ongoing;
 
 	public void updateEntity(Serie serie) {
 		serie.setOngoing(ongoing);
 	}
-
 }
 
 

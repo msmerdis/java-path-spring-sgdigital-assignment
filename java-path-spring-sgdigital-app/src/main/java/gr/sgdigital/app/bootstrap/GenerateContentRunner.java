@@ -15,6 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import gr.sgdigital.common.base.BaseComponent;
 import gr.sgdigital.common.transfer.ApiStatus;
+import gr.sgdigital.movies.domain.Season;
+import gr.sgdigital.movies.domain.Serie;
+import gr.sgdigital.movies.domain.TitleType;
 import gr.sgdigital.movies.service.EpisodeService;
 import gr.sgdigital.movies.service.GenreService;
 import gr.sgdigital.movies.service.MovieService;
@@ -23,6 +26,7 @@ import gr.sgdigital.movies.service.SerieService;
 import gr.sgdigital.movies.transfer.GenreCreateDTO;
 import gr.sgdigital.movies.transfer.GenreDetailViewDTO;
 import gr.sgdigital.movies.transfer.MovieCreateDTO;
+import gr.sgdigital.movies.transfer.SerieCreateDTO;
 
 @Component
 @Profile("test-data")
@@ -59,7 +63,7 @@ public class GenerateContentRunner extends BaseComponent implements CommandLineR
 	public void run(String... args) throws Exception {
 		generateGenres ();
 		generateMovies (10);
-	//	generateSeries (10, 1, 10, 10, 24);
+		generateSeries (10, 1, 10, 10, 24);
 	}
 
 	@Transactional
@@ -94,8 +98,7 @@ public class GenerateContentRunner extends BaseComponent implements CommandLineR
 		movieService.create(movieDTO);
 	}
 
-	/*
-	private void generateSeries (int numSeries, int minSeasons, int maxSeasons, int minEpisodes, int maxEpisodes) {
+	private void generateSeries (int numSeries, int minSeasons, int maxSeasons, int minEpisodes, int maxEpisodes) throws ApiStatus, Exception {
 		for (int i = 1; i <= numSeries; i += 1) {
 
 			int releasedYear = 2000 + random.nextInt(20);
@@ -106,27 +109,16 @@ public class GenerateContentRunner extends BaseComponent implements CommandLineR
 		}
 	}
 
-	private void generateSerie (String title, String description, int releasedYear, int numSeasons, int numEpisodes) {
-		Serie serie = serieService.loadOrCreate(
-			titleService.loadOrCreate(
-				title,
-				TitleType.SERIE,
-				description
-			), random.nextBoolean()
-		);
+	private void generateSerie (String title, String description, int releasedYear, int numSeasons, int numEpisodes) throws ApiStatus, Exception {
+		SerieCreateDTO serieDTO = new SerieCreateDTO();
 
-		for (int j = 1; j <= numSeasons; j += 1) {
-			Season season = seasonService.loadOrCreate(serie, j, "Season Name " + j, "Season Description " + j, releasedYear + j);
+		serieDTO.setSerieName(title);
+		serieDTO.setSerieDesc(description);
+		serieDTO.setGenres(generateRandomListOfGenres());
+		serieDTO.setOngoing(releasedYear % 2 == 0);
 
-			for (int k = 1; k <= numEpisodes; k += 1) {
-				episodeService.loadOrCreate(season, k, "Episode Name " + k, "Episode Description " + k, 1000 + random.nextInt(3000));
-			}
-		}
-
-		applyRandomGenres (serie.getTitle().getGenres());
-
-		//serieService.update(serie);
-	}*/
+		serieService.create(serieDTO);
+	}
 
 	private Set<String> generateRandomListOfGenres() {
 		Set<String> genreList = new HashSet<String>();

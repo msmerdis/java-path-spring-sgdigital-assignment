@@ -70,19 +70,19 @@ public class MovieSanityRunner extends BaseComponent implements CommandLineRunne
 			throw new Exception (error);
 		}
 		if (!theMovie.getMovieName().equals(movie)) {
-			throw new Exception (error + " (2)");
+			throw new Exception (error);
 		}
 		if (!theMovie.getMovieDesc().equals(descr)) {
-			throw new Exception (error + " (3)");
+			throw new Exception (error);
 		}
 		if (theMovie.getReleasedYear() != year) {
-			throw new Exception (error + " (4)");
+			throw new Exception (error);
 		}
 		if (!theMovie.getGenres().containsAll(genreSet)) {
-			throw new Exception (error + " (5)");
+			throw new Exception (error);
 		}
 		if (!genreSet.containsAll(theMovie.getGenres())) {
-			throw new Exception (error + " (6)");
+			throw new Exception (error);
 		}
 	}
 
