@@ -54,7 +54,7 @@ public class Title extends BaseEntity <Long, Title, TitleSimpleViewDTO, TitleDet
 		joinColumns = @JoinColumn(name="titleId"),
 		inverseJoinColumns = @JoinColumn(name="genreId")
 	)
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.LAZY)
 	private Set<Genre> genres = new HashSet<Genre> ();
 
 	@Fetch(FetchMode.SELECT)
