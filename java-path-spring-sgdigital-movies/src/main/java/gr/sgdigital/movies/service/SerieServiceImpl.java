@@ -116,8 +116,7 @@ public class SerieServiceImpl extends AbstractServiceImpl<
 
 	@Override
 	protected TermMatchingContext addSearchFields(TermContext context) {
-		// serie is not indexed
-		return null;
+		return context.onFields();
 	}
 
 }

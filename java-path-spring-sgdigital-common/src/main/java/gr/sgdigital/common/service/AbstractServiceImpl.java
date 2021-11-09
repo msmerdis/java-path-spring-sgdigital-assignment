@@ -45,7 +45,9 @@ public abstract class AbstractServiceImpl<
 		this.repository  = repository;
 		this.entityClass = entityClass;
 
-		if (supportsFreeTestSearch()) {
+		logger.info("Entity {} supports free text search", entityClass);
+
+		if (supportsFreeTextSearch()) {
 			this.fullTextEntityManager = Search.getFullTextEntityManager(
 				entityManagerFactory.createEntityManager()
 			);
@@ -132,14 +134,19 @@ public abstract class AbstractServiceImpl<
 	}
 
 	@Override
-	public boolean supportsFreeTestSearch() {
+	public boolean supportsFreeTextSearch() {
 		return entityClass.isAnnotationPresent(Indexed.class);
+	}
+
+	@Override
+	public String entityName() {
+		return entityClass.getSimpleName();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<DetailDTO> freeTextSearch(String keyword) throws ApiStatus, Exception {
-		if (!supportsFreeTestSearch()) {
+		if (!supportsFreeTextSearch()) {
 			throw new NotImplementedException("Free text search not supported for this entity");
 		}
 

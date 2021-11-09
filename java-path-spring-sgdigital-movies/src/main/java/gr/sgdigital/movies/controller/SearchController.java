@@ -1,5 +1,10 @@
 package gr.sgdigital.movies.controller;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,8 +15,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import gr.sgdigital.common.base.BaseComponent;
-import gr.sgdigital.common.service.AbstractService;
+import gr.sgdigital.common.service.AbstractServiceImpl;
 import gr.sgdigital.common.transfer.ApiResponse;
+import gr.sgdigital.common.transfer.SearchResult;
 
 @RestController
 @RequestMapping ("/api/search")
@@ -19,24 +25,43 @@ public class SearchController extends BaseComponent {
 
 	private ListableBeanFactory listableBeanFactory;
 
+	@SuppressWarnings("rawtypes")
+	private List<AbstractServiceImpl> services = new LinkedList<AbstractServiceImpl> ();
+
 	@Autowired
 	public SearchController (ListableBeanFactory listableBeanFactory) {
 		this.listableBeanFactory = listableBeanFactory;
-		logger.info("exectute on contructor");
+	}
 
-		var beans = listableBeanFactory.getBeansOfType(AbstractService.class, false, false);
+	@PostConstruct
+	public void identifyServices () {
+		// get all service beans
+		var beans = listableBeanFactory.getBeansOfType(AbstractServiceImpl.class, false, false);
 
-		beans.forEach((name, service) -> logger.info("got service : " + name));
+		for (String name : beans.keySet()) {
+			var service = beans.get(name);
+			logger.info("identified service implementation {}", service.getClass().getName());
+
+			if (service.supportsFreeTextSearch()) {
+				logger.info(" -> service supports free text search, keep for future search");
+				services.add(service);
+			}
+		}
 	}
 
 	@GetMapping("")
 	@ResponseStatus(HttpStatus.OK)
-	public ApiResponse<String> search(@RequestHeader("X-Search-Terms") String keyword) throws Exception {
-		var beans = listableBeanFactory.getBeansOfType(AbstractService.class, false, false);
+	public ApiResponse<List<SearchResult>> search(@RequestHeader("X-Search-Terms") String keyword) throws Exception {
 
-		beans.forEach((name, service) -> logger.info("got service : " + name + " with searchable " + service.supportsFreeTestSearch()));
+		List<SearchResult> results = new LinkedList<SearchResult> ();
 
-		return new ApiResponse<String> ("dummy");
+		for (var service : services) {
+			for (var object : service.freeTextSearch(keyword)) {
+				results.add(new SearchResult(service.entityName(), object));
+			}
+		}
+
+		return new ApiResponse<List<SearchResult>> (results);
 	}
 }
 

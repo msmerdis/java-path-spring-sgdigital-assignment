@@ -121,8 +121,7 @@ public class TitleServiceImpl extends AbstractServiceImpl<
 
 	@Override
 	protected TermMatchingContext addSearchFields(TermContext context) {
-		// genre is not indexed
-		return null;
+		return context.onFields("title", "description");
 	}
 
 }
