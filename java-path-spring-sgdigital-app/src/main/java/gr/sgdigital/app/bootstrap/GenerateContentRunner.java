@@ -93,10 +93,10 @@ public class GenerateContentRunner extends BaseComponent implements CommandLineR
 
 
 		logger.info("generate movies");
-		generateMovies (10);
+		generateMovies (100);
 
 		logger.info("generate series");
-		generateSeries (10, 1, 10, 10, 24);
+		generateSeries (10, 1, 8, 8, 24);
 
 		logger.info("generate crew roles");
 		generateCrewRoles ();
@@ -105,7 +105,7 @@ public class GenerateContentRunner extends BaseComponent implements CommandLineR
 		generateCrew (100);
 
 		logger.info("link crew and titles");
-		assignCrewToTitles (5, 55);
+		assignCrewToTitles (5, 15);
 	}
 
 	@Transactional
