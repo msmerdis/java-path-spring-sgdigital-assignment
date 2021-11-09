@@ -18,7 +18,9 @@ import lombok.Setter;
 @Entity
 @Table(
 	name = "ttitlecrew",
-	indexes = {@Index(columnList = "titleId, crewId")}
+	indexes = {
+		@Index(columnList = "titleId, crewId", unique = true)
+	}
 )
 public class TitleCrew extends EmbeddableEntity <TitleCrewKey, TitleCrew, TitleCrewSimpleViewDTO, TitleCrewDetailViewDTO> {
 

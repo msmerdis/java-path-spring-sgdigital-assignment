@@ -28,7 +28,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "tserie", indexes = {@Index(columnList = "id")})
+@Table(
+	name = "tserie",
+	indexes = {
+		@Index(columnList = "id", unique = true)
+	}
+)
 @SequenceGenerator(name = "idGenerator", sequenceName = "SERIE_SEQ", initialValue = 200000, allocationSize = 1)
 public class Serie extends BaseEntity <Long, Serie, SerieSimpleViewDTO, SerieDetailViewDTO> {
 

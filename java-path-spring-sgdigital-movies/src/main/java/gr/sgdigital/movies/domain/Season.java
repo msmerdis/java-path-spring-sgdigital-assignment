@@ -34,9 +34,9 @@ import lombok.Setter;
 @Table(
 	name = "tseason",
 	indexes = {
-		@Index(columnList = "id"),
-		@Index(columnList = "id, orderNo"),
-		@Index(columnList = "id, name")
+		@Index(columnList = "id", unique = true),
+		@Index(columnList = "serieId, orderNo", unique = true),
+		@Index(columnList = "serieId, name"   , unique = true)
 	}
 )
 @SequenceGenerator(name = "idGenerator", sequenceName = "SEASON_SEQ", initialValue = 300000, allocationSize = 1)

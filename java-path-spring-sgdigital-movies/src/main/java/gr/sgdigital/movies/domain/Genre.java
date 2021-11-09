@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.Index;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import gr.sgdigital.common.domain.BaseEntity;
@@ -19,8 +18,10 @@ import lombok.Setter;
 @Entity
 @Table(
 	name = "tgenre",
-	indexes = {@Index(columnList = "id"), @Index(columnList = "name")},
-	uniqueConstraints = {@UniqueConstraint(columnNames = "name")}
+	indexes = {
+		@Index(columnList =  "id" , unique = true),
+		@Index(columnList = "name", unique = true)
+	}
 )
 @SequenceGenerator(name = "idGenerator", sequenceName = "GENRE_SEQ", initialValue = 1, allocationSize = 1)
 public class Genre extends BaseEntity <Integer, Genre, GenreSimpleViewDTO, GenreDetailViewDTO> {

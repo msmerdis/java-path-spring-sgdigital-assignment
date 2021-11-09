@@ -19,7 +19,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "tmovie", indexes = {@Index(columnList = "id")})
+@Table(
+	name = "tmovie",
+	indexes = {
+		@Index(columnList = "id", unique = true)
+	}
+)
 @SequenceGenerator(name = "idGenerator", sequenceName = "MOVIE_SEQ", initialValue = 100000, allocationSize = 1)
 public class Movie extends BaseEntity <Long, Movie, MovieSimpleViewDTO, MovieDetailViewDTO> {
 	@Column

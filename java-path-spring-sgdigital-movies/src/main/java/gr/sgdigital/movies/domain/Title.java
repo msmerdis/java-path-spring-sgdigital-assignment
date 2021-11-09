@@ -34,7 +34,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "ttitle", indexes = {@Index(columnList = "id")})
+@Table(
+	name = "ttitle",
+	indexes = {
+		@Index(columnList = "id", unique = true),
+		@Index(columnList = "title", unique = true)
+	}
+)
 @SequenceGenerator(name = "idGenerator", sequenceName = "TITLE_SEQ", initialValue = 100000, allocationSize = 1)
 @Indexed
 public class Title extends BaseEntity <Long, Title, TitleSimpleViewDTO, TitleDetailViewDTO> {

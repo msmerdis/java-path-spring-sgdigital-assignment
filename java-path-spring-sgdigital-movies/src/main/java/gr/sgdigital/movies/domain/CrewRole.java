@@ -11,7 +11,6 @@ import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -27,8 +26,10 @@ import lombok.Setter;
 @Entity
 @Table(
 	name = "tcrewrole",
-	indexes = {@Index(columnList = "id"), @Index(columnList = "name")},
-	uniqueConstraints = {@UniqueConstraint(columnNames = "name")}
+	indexes = {
+		@Index(columnList =  "id" , unique = true),
+		@Index(columnList = "name", unique = true)
+	}
 )
 @SequenceGenerator(name = "idGenerator", sequenceName = "GENRE_SEQ", initialValue = 1, allocationSize = 1)
 public class CrewRole extends BaseEntity <Integer, CrewRole, CrewRoleSimpleViewDTO, CrewRoleDetailViewDTO> {
