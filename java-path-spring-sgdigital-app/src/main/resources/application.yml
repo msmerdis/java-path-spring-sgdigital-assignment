@@ -27,7 +27,7 @@ spring:
         prepStmtCacheSize: 250
         prepStmtCacheSqlLimit: 2048
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:h2:file:~/movies_sgdigital;IFEXISTS=FALSE;AUTO_SERVER=TRUE;
+    url: jdbc:h2:file:./movies_sgdigital_data/h2db;IFEXISTS=FALSE;AUTO_SERVER=TRUE;
   h2:
     console:
       enabled: true
@@ -39,10 +39,6 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
       use-new-id-generator-mappings: true
-      search:
-        default:
-          directory_provider: filesystem
-          indexBase: ./data/lucene
     open-in-view: false
     properties:
       hibernate:
@@ -60,6 +56,10 @@ spring:
           events:
             log:
               LOG_QUERIES_SLOWER_THAN_MS: 10 # NOT a production setting
+        search:
+          default:
+            directory_provider: filesystem
+            indexBase: movies_sgdigital_data/search_indexes
     show-sql: false
   sql:
     init:
