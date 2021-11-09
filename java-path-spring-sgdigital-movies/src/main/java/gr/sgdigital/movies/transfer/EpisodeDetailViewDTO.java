@@ -1,5 +1,6 @@
 package gr.sgdigital.movies.transfer;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -8,6 +9,7 @@ import gr.sgdigital.movies.domain.Genre;
 import gr.sgdigital.movies.domain.Season;
 import gr.sgdigital.movies.domain.Serie;
 import gr.sgdigital.movies.domain.Title;
+import gr.sgdigital.movies.domain.TitleCrew;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,6 +34,8 @@ public class EpisodeDetailViewDTO extends EpisodeSimpleViewDTO {
 	private Set<String> serieGenre;
 	private Boolean ongoing;
 
+	private List<TitleCrewSimpleViewDTO> crewList;
+
 	@Override
 	public void updateFromEntity(Episode episode) {
 		super.updateFromEntity(episode);
@@ -51,6 +55,7 @@ public class EpisodeDetailViewDTO extends EpisodeSimpleViewDTO {
 		serieDesc  = title.getDescription();
 		serieGenre = title.getGenres().stream().map(Genre::getName).collect(Collectors.toSet());
 		ongoing    = serie.getOngoing();
+		crewList   = title.getTitleCrew().stream().map(TitleCrew::getTitleSummaryView).collect(Collectors.toList());
 	}
 }
 
