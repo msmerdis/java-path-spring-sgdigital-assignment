@@ -3,7 +3,6 @@ package gr.sgdigital.movies.transfer;
 import java.util.Date;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 import gr.sgdigital.common.transfer.AbstractCreateDTO;
 import gr.sgdigital.movies.domain.Crew;
