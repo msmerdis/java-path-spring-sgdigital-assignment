@@ -16,6 +16,8 @@ import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 
 import gr.sgdigital.common.domain.BaseEntity;
 import gr.sgdigital.movies.transfer.CrewDetailViewDTO;
@@ -36,14 +38,18 @@ import lombok.Setter;
 	}
 )
 @SequenceGenerator(name = "idGenerator", sequenceName = "CREW_SEQ", initialValue = 1, allocationSize = 1)
+@Indexed
 public class Crew extends BaseEntity <Long, Crew, CrewSimpleViewDTO, CrewDetailViewDTO> {
 
+	@Field
 	@Column(length = 128, nullable = false)
 	private String firstName;
 
+	@Field
 	@Column(length = 128, nullable = false)
 	private String lastName;
 
+	@Field
 	@Column(length = 128, nullable = true)
 	private String middleName;
 

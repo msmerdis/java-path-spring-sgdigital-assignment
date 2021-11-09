@@ -1,5 +1,9 @@
 package gr.sgdigital.movies.service;
 
+import javax.persistence.EntityManagerFactory;
+
+import org.hibernate.search.query.dsl.TermContext;
+import org.hibernate.search.query.dsl.TermMatchingContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -29,8 +33,8 @@ public class EpisodeServiceImpl extends AbstractServiceImpl<
 	private SeasonService seasonService;
 
 	@Autowired
-	public EpisodeServiceImpl(EpisodeRepository repository, SeasonService seasonService) {
-		super(repository, Episode.class);
+	public EpisodeServiceImpl(EpisodeRepository repository, EntityManagerFactory entityManagerFactory, SeasonService seasonService) {
+		super(repository, entityManagerFactory, Episode.class);
 
 		this.seasonService = seasonService;
 	}
@@ -47,6 +51,11 @@ public class EpisodeServiceImpl extends AbstractServiceImpl<
 		seasonService.updateSeasonWithSerie(episode, dto.getSeasonId());
 
 		return repository.saveAndFlush(episode).detailView();
+	}
+
+	@Override
+	protected TermMatchingContext addSearchFields (TermContext context) {
+		return context.onFields ("name", "desc");
 	}
 
 }

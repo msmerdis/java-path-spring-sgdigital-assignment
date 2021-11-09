@@ -87,11 +87,24 @@ public class GenerateContentRunner extends BaseComponent implements CommandLineR
 
 	@Override
 	public void run(String... args) throws Exception {
+
+		logger.info("generate genres");
 		generateGenres ();
+
+
+		logger.info("generate movies");
 		generateMovies (10);
+
+		logger.info("generate series");
 		generateSeries (10, 1, 10, 10, 24);
+
+		logger.info("generate crew roles");
 		generateCrewRoles ();
+
+		logger.info("generate crew");
 		generateCrew (100);
+
+		logger.info("link crew and titles");
 		assignCrewToTitles (5, 55);
 	}
 
@@ -110,7 +123,6 @@ public class GenerateContentRunner extends BaseComponent implements CommandLineR
 	}
 
 	private void generateMovies (int numMovies) throws ApiStatus, Exception {
-		logger.info("generate movies");
 		for (int i = 1; i <= numMovies; i += 1) {
 			generateMovie ("Movie title " + i, "Movie Description " + i, 2000 + random.nextInt(20));
 		}

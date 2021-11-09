@@ -2,6 +2,10 @@ package gr.sgdigital.movies.service;
 
 import java.util.Optional;
 
+import javax.persistence.EntityManagerFactory;
+
+import org.hibernate.search.query.dsl.TermContext;
+import org.hibernate.search.query.dsl.TermMatchingContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +31,8 @@ public class CrewServiceImpl extends AbstractServiceImpl<
 > implements CrewService {
 
 	@Autowired
-	public CrewServiceImpl(CrewRepository repository) {
-		super(repository, Crew.class);
+	public CrewServiceImpl(CrewRepository repository, EntityManagerFactory entityManagerFactory) {
+		super(repository, entityManagerFactory, Crew.class);
 	}
 
 	@Override
@@ -41,6 +45,12 @@ public class CrewServiceImpl extends AbstractServiceImpl<
 
 		titleCrew.setCrew(crew.get());
 	}
+
+	@Override
+	protected TermMatchingContext addSearchFields (TermContext context) {
+		return context.onFields ("firstName", "lastName", "middleName");
+	}
+
 }
 
 

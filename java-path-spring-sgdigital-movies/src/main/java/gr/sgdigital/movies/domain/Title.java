@@ -22,6 +22,8 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.search.annotations.Field;
+import org.springframework.stereotype.Indexed;
 
 import gr.sgdigital.common.domain.BaseEntity;
 import gr.sgdigital.movies.transfer.TitleDetailViewDTO;
@@ -34,12 +36,15 @@ import lombok.Setter;
 @Entity
 @Table(name = "ttitle", indexes = {@Index(columnList = "id")})
 @SequenceGenerator(name = "idGenerator", sequenceName = "TITLE_SEQ", initialValue = 100000, allocationSize = 1)
+@Indexed
 public class Title extends BaseEntity <Long, Title, TitleSimpleViewDTO, TitleDetailViewDTO> {
 
+	@Field
 	@NotNull(message = "Movie must have a title.")
 	@Column(length = 128, nullable = false)
 	private String title;
 
+	@Field
 	@Column(length = 1024, nullable = true)
 	private String description;
 

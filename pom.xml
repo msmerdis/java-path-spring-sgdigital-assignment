@@ -50,6 +50,7 @@
 		<!-- Library versions-->
 		<disruptor-maven-plugin.version>3.4.4</disruptor-maven-plugin.version>
 		<springfox-swagger2.version>2.9.2</springfox-swagger2.version>
+		<hibernate-search-orm.version>5.11.10.Final</hibernate-search-orm.version>
 	</properties>
 
 	<dependencyManagement>
@@ -89,6 +90,12 @@
 				<groupId>io.springfox</groupId>
 				<artifactId>springfox-swagger-ui</artifactId>
 				<version>${springfox-swagger2.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-search-orm</artifactId>
+				<version>${hibernate-search-orm.version}</version>
 			</dependency>
 
 		</dependencies>

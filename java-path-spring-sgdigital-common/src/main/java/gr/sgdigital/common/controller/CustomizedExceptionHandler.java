@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
@@ -37,9 +38,16 @@ public class CustomizedExceptionHandler extends BaseComponent {
 	}
 
 	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-	public final ResponseEntity<?> handleNotSupportedMethodException (final HttpRequestMethodNotSupportedException ex) {
+	public final ResponseEntity<?> handleHttpRequestMethodNotSupportedException (final HttpRequestMethodNotSupportedException ex) {
 		return generateResponse (
 			new MethodNotAllowedException(ex.getMessage()), null
+		);
+	}
+
+	@ExceptionHandler(MissingRequestHeaderException.class)
+	public final ResponseEntity<?> handleMissingRequestHeaderException (final MissingRequestHeaderException ex) {
+		return generateResponse (
+			new BadRequestException(ex.getMessage()), null
 		);
 	}
 

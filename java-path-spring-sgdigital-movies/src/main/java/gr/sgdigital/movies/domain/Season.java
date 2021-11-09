@@ -17,6 +17,8 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.search.annotations.Field;
+import org.springframework.stereotype.Indexed;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -38,15 +40,18 @@ import lombok.Setter;
 	}
 )
 @SequenceGenerator(name = "idGenerator", sequenceName = "SEASON_SEQ", initialValue = 300000, allocationSize = 1)
+@Indexed
 public class Season extends BaseEntity <Long, Season, SeasonSimpleViewDTO, SeasonDetailViewDTO> {
 
 	@NotNull
 	@Column(name = "orderNo", nullable = false)
 	private int order;
 
+	@Field
 	@Column(length = 128, nullable = false)
 	private String name;
 
+	@Field
 	@Column(length = 512, nullable = true)
 	private String desc;
 

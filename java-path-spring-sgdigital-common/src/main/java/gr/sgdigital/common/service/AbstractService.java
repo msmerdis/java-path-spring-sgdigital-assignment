@@ -25,6 +25,9 @@ public interface AbstractService<
 	DetailDTO find(Key id) throws ApiStatus, Exception;
 
 	List<SimpleDTO> findAll() throws ApiStatus, Exception;
+
+	List<DetailDTO> freeTextSearch (String keyword) throws ApiStatus, Exception;
+	boolean supportsFreeTestSearch ();
 }
 
 

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import gr.sgdigital.common.base.BaseComponent;
@@ -22,6 +23,7 @@ import gr.sgdigital.common.transfer.AbstractResponseDTO;
 import gr.sgdigital.common.transfer.AbstractUpdateDTO;
 import gr.sgdigital.common.transfer.ApiResponse;
 import gr.sgdigital.common.transfer.ApiStatus;
+import gr.sgdigital.common.transfer.status.NotImplementedException;
 
 public abstract class AbstractController<
 	Key,
@@ -38,6 +40,12 @@ public abstract class AbstractController<
 	@Autowired
 	public AbstractController (Service service) {
 		this.service = service;
+	}
+
+	@GetMapping("/search")
+	@ResponseStatus(HttpStatus.OK)
+	public ApiResponse<List<DetailDTO>> search(@RequestHeader("X-Search-Terms") String keyword) throws Exception {
+		return new ApiResponse<List<DetailDTO>> (service.freeTextSearch(keyword));
 	}
 
 	@GetMapping("/{id}")

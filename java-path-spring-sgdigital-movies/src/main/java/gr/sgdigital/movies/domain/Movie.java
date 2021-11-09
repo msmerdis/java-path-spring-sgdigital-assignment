@@ -10,6 +10,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.springframework.stereotype.Indexed;
+
 import gr.sgdigital.common.domain.BaseEntity;
 import gr.sgdigital.movies.transfer.MovieDetailViewDTO;
 import gr.sgdigital.movies.transfer.MovieSimpleViewDTO;

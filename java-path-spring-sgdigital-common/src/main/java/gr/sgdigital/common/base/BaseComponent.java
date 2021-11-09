@@ -14,12 +14,12 @@ public abstract class BaseComponent {
 
 	@PostConstruct
 	private void init() {
-		logger.trace("Loaded {}.", getClass().getName());
+		logger.info("Loaded {}.", getClass().getName());
 	}
 
 	@PreDestroy
 	private void destroy() {
-		logger.trace("Ready to destroy {}.", getClass().getName());
+		logger.info("Ready to destroy {}.", getClass().getName());
 	}
 }
 

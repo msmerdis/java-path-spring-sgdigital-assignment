@@ -2,6 +2,10 @@ package gr.sgdigital.movies.service;
 
 import java.util.Set;
 
+import javax.persistence.EntityManagerFactory;
+
+import org.hibernate.search.query.dsl.TermContext;
+import org.hibernate.search.query.dsl.TermMatchingContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +30,8 @@ public class GenreServiceImpl extends AbstractServiceImpl<
 > implements GenreService {
 
 	@Autowired
-	public GenreServiceImpl(GenreRepository repository) {
-		super(repository, Genre.class);
+	public GenreServiceImpl(GenreRepository repository, EntityManagerFactory entityManagerFactory) {
+		super(repository, entityManagerFactory, Genre.class);
 	}
 
 	@Override
@@ -49,6 +53,12 @@ public class GenreServiceImpl extends AbstractServiceImpl<
 		for (String name: names) {
 			mapGenreToTitle(title, name);
 		}
+	}
+
+	@Override
+	protected TermMatchingContext addSearchFields(TermContext context) {
+		// genre is not indexed
+		return null;
 	}
 
 }

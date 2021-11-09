@@ -3,8 +3,14 @@ package gr.sgdigital.common.service;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
+import javax.persistence.EntityManagerFactory;
+
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.jpa.FullTextEntityManager;
+import org.hibernate.search.jpa.Search;
+import org.hibernate.search.query.dsl.TermContext;
+import org.hibernate.search.query.dsl.TermMatchingContext;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,8 +24,9 @@ import gr.sgdigital.common.transfer.AbstractUpdateDTO;
 import gr.sgdigital.common.transfer.ApiStatus;
 import gr.sgdigital.common.transfer.status.ConflictException;
 import gr.sgdigital.common.transfer.status.NotFoundException;
+import gr.sgdigital.common.transfer.status.NotImplementedException;
 
-public class AbstractServiceImpl<
+public abstract class AbstractServiceImpl<
 	Key,
 	Entity extends AbstractEntity<Key, Entity, SimpleDTO, DetailDTO>,
 	CreateDTO extends AbstractCreateDTO<Entity>,
@@ -32,9 +39,17 @@ public class AbstractServiceImpl<
 	final protected Repository repository;
 	final private Class<Entity> entityClass;
 
-	public AbstractServiceImpl (Repository repository, Class<Entity> entityClass) {
+	private FullTextEntityManager fullTextEntityManager;
+
+	public AbstractServiceImpl (Repository repository, EntityManagerFactory entityManagerFactory, Class<Entity> entityClass) {
 		this.repository  = repository;
 		this.entityClass = entityClass;
+
+		if (supportsFreeTestSearch()) {
+			this.fullTextEntityManager = Search.getFullTextEntityManager(
+				entityManagerFactory.createEntityManager()
+			);
+		}
 	}
 
 	@Override
@@ -115,6 +130,40 @@ public class AbstractServiceImpl<
 
 		return results;
 	}
+
+	@Override
+	public boolean supportsFreeTestSearch() {
+		return entityClass.isAnnotationPresent(Indexed.class);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<DetailDTO> freeTextSearch(String keyword) throws ApiStatus, Exception {
+		if (!supportsFreeTestSearch()) {
+			throw new NotImplementedException("Free text search not supported for this entity");
+		}
+
+		var results = new LinkedList<DetailDTO>();
+
+		var queryBuilder = fullTextEntityManager.getSearchFactory()
+			.buildQueryBuilder()
+			.forEntity(entityClass)
+			.get();
+
+		var query = addSearchFields(queryBuilder.keyword())
+			.matching(keyword)
+			.createQuery();
+
+		var fullTextQuery = fullTextEntityManager.createFullTextQuery(query, entityClass);
+
+		for (Entity entity : (List<Entity>)fullTextQuery.getResultList()) {
+			results.add(entity.detailView());
+		}
+
+		return results;
+	}
+
+	protected abstract TermMatchingContext addSearchFields (TermContext context);
 }
 
 
