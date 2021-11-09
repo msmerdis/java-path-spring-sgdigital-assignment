@@ -18,7 +18,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.search.annotations.Field;
-import org.springframework.stereotype.Indexed;
+import org.hibernate.search.annotations.Indexed;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
